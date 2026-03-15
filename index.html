@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hair Salon BLOOM | 表参道の美容室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@200;300;400;500;600&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FAF8F5;
+  --bg-warm: #F3EDE6;
+  --bg-dark: #1A1612;
+  --text: #2C2420;
+  --text-light: #6B5E54;
+  --text-muted: #9B8E82;
+  --accent: #8B6914;
+  --accent-light: #C4A44A;
+  --accent-pale: #EDE4CC;
+  --white: #FFFFFF;
+  --border: #DDD5CA;
+  --border-light: #EDE8E1;
+  --shadow: rgba(26, 22, 18, 0.08);
+  --shadow-md: rgba(26, 22, 18, 0.12);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-serif-jp: 'Noto Serif JP', serif;
+  --font-body: 'Noto Sans JP', sans-serif;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section-padding { padding: 100px 0; }
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-family: var(--font-serif-jp);
+  font-weight: 200;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  max-width: 560px;
+}
+
+.section-header { margin-bottom: 60px; }
+.section-header.center { text-align: center; }
+.section-header.center .section-subtitle { margin: 0 auto; }
+
+.divider { width: 40px; height: 1px; background: var(--accent); margin: 20px 0; }
+.center .divider { margin: 20px auto; }
+
+/* ANIMATIONS */
+.fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+.fade-in.delay-1 { transition-delay: 0.1s; }
+.fade-in.delay-2 { transition-delay: 0.2s; }
+.fade-in.delay-3 { transition-delay: 0.3s; }
+.fade-in.delay-4 { transition-delay: 0.4s; }
+
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(250, 248, 245, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.nav.scrolled { border-bottom-color: var(--border-light); box-shadow: 0 1px 20px var(--shadow); }
+
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; height: 72px;
+}
+
+.nav-logo {
+  font-family: var(--font-display); font-size: 1.5rem; font-weight: 300;
+  letter-spacing: 0.12em; color: var(--text); text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; letter-spacing: 0.1em; text-decoration: none;
+  color: var(--text-light); transition: color 0.3s; font-weight: 400;
+}
+.nav-links a:hover { color: var(--accent); }
+
+.nav-cta {
+  font-size: 0.75rem; letter-spacing: 0.08em; padding: 10px 24px;
+  background: var(--bg-dark); color: var(--bg) !important; border-radius: 2px;
+  transition: background 0.3s !important;
+}
+.nav-cta:hover { background: var(--accent) !important; }
+
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.nav-hamburger span { width: 22px; height: 1.5px; background: var(--text); transition: 0.3s; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-img {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1800&q=80&fit=crop') center center / cover no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(26,22,18,0.92) 0%, rgba(26,22,18,0.75) 50%, rgba(26,22,18,0.4) 100%);
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1200px; margin: 0 auto; padding: 0 24px; padding-top: 72px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%;
+}
+
+.hero-text { color: var(--bg); }
+
+.hero-badge {
+  display: inline-block; font-family: var(--font-display); font-size: 0.7rem;
+  letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light);
+  border: 1px solid rgba(196,164,74,0.3); padding: 6px 16px; margin-bottom: 32px;
+  opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+}
+
+.hero-title {
+  font-family: var(--font-display); font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 300; line-height: 1.05; letter-spacing: 0.04em; margin-bottom: 8px;
+  opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+}
+.hero-title .accent { color: var(--accent-light); }
+
+.hero-title-jp {
+  font-family: var(--font-serif-jp); font-size: clamp(0.85rem, 1.5vw, 1rem);
+  font-weight: 200; letter-spacing: 0.2em; color: rgba(250,248,245,0.5);
+  margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
+}
+
+.hero-desc {
+  font-weight: 200; font-size: 0.92rem; line-height: 2;
+  color: rgba(250,248,245,0.65); max-width: 420px; margin-bottom: 40px;
+  opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+}
+
+.hero-actions { display: flex; gap: 16px; opacity: 0; animation: fadeUp 0.8s 0.95s forwards; }
+
+.btn {
+  display: inline-block; font-family: var(--font-body); font-size: 0.78rem;
+  letter-spacing: 0.1em; font-weight: 400; padding: 14px 36px;
+  text-decoration: none; border-radius: 2px; transition: all 0.3s ease; cursor: pointer; border: none;
+}
+.btn-primary { background: var(--accent-light); color: var(--bg-dark); }
+.btn-primary:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(139,105,20,0.3); }
+.btn-outline { background: transparent; color: var(--bg); border: 1px solid rgba(250,248,245,0.25); }
+.btn-outline:hover { border-color: var(--accent-light); color: var(--accent-light); }
+
+.hero-visual { position: relative; height: 520px; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
+
+.hero-visual-card {
+  position: absolute; background: rgba(250,248,245,0.08); backdrop-filter: blur(12px);
+  border: 1px solid rgba(250,248,245,0.1); border-radius: 4px; padding: 28px;
+}
+.hero-card-1 { top: 20px; right: 0; width: 280px; }
+.hero-card-2 { bottom: 60px; left: 0; width: 260px; }
+.hero-card-3 { top: 50%; right: 40px; transform: translateY(-50%); width: 200px; }
+
+.hero-card-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 300; color: var(--accent-light); line-height: 1; margin-bottom: 8px; }
+.hero-card-label { font-size: 0.72rem; letter-spacing: 0.08em; color: rgba(250,248,245,0.5); }
+.hero-card-text { font-family: var(--font-serif-jp); font-size: 0.82rem; font-weight: 200; color: rgba(250,248,245,0.7); line-height: 1.8; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== PHOTO BREAK ===== */
+.photo-break {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  height: 280px;
+  overflow: hidden;
+}
+.photo-break img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.photo-break img:hover { transform: scale(1.05); }
+
+.photo-break-full {
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+.photo-break-full img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.photo-break-full-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(26,22,18,0.4));
+}
+
+/* ===== CONCEPT ===== */
+.concept { background: var(--white); }
+
+.concept-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+
+.concept-card {
+  border: 1px solid var(--border-light); border-radius: 4px; overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.concept-card:hover { border-color: var(--accent-pale); box-shadow: 0 8px 30px var(--shadow); transform: translateY(-4px); }
+
+.concept-card-img {
+  width: 100%; height: 200px; object-fit: cover;
+}
+
+.concept-card-body { padding: 28px 24px; }
+
+.concept-card h3 { font-family: var(--font-serif-jp); font-weight: 400; font-size: 1rem; margin-bottom: 12px; }
+.concept-card p { font-size: 0.85rem; color: var(--text-light); line-height: 1.9; }
+
+/* ===== MENU ===== */
+.menu-section { background: var(--bg); }
+
+.menu-tabs { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+.menu-tab {
+  font-family: var(--font-body); font-size: 0.78rem; letter-spacing: 0.05em;
+  font-weight: 400; padding: 10px 20px; background: transparent;
+  border: 1px solid var(--border); border-radius: 2px; color: var(--text-light);
+  cursor: pointer; transition: all 0.3s;
+}
+.menu-tab:hover { border-color: var(--accent); color: var(--accent); }
+.menu-tab.active { background: var(--bg-dark); border-color: var(--bg-dark); color: var(--bg); }
+
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.menu-item {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 20px 24px; background: var(--white); border: 1px solid var(--border-light);
+  border-radius: 4px; transition: border-color 0.3s, box-shadow 0.3s; gap: 16px;
+}
+.menu-item:hover { border-color: var(--accent-pale); box-shadow: 0 2px 12px var(--shadow); }
+.menu-item-name { font-weight: 400; font-size: 0.9rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.menu-badge { font-size: 0.6rem; padding: 2px 8px; background: var(--accent); color: var(--white); border-radius: 1px; letter-spacing: 0.05em; }
+.menu-item-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+.menu-item-right { text-align: right; flex-shrink: 0; }
+.menu-item-price { font-family: var(--font-display); font-size: 1.15rem; font-weight: 400; color: var(--accent); white-space: nowrap; }
+.menu-item-duration { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+.menu-panel { display: none; }
+.menu-panel.active { display: block; }
+
+/* ===== STAFF ===== */
+.staff-section { background: var(--white); }
+
+.staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+.staff-card {
+  background: var(--bg); border-radius: 4px; border: 1px solid var(--border-light);
+  overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;
+}
+.staff-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px var(--shadow); }
+
+.staff-card-img { width: 100%; height: 240px; object-fit: cover; object-position: top; }
+
+.staff-card-body { padding: 24px; }
+
+.staff-name { font-family: var(--font-serif-jp); font-weight: 400; font-size: 1rem; margin-bottom: 4px; }
+.staff-role { font-size: 0.72rem; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 12px; }
+.staff-profile { font-size: 0.8rem; color: var(--text-light); line-height: 1.8; margin-bottom: 16px; }
+.staff-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.staff-tag { font-size: 0.68rem; padding: 4px 10px; background: var(--white); border: 1px solid var(--border); border-radius: 20px; color: var(--text-light); }
+.staff-nomination { margin-top: 12px; font-size: 0.72rem; color: var(--text-muted); }
+
+/* ===== PRODUCTS ===== */
+.products-section { background: var(--bg); }
+
+.products-scroll { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+.product-card {
+  background: var(--white); border: 1px solid var(--border-light); border-radius: 4px;
+  overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column;
+}
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px var(--shadow); }
+
+.product-card-img { width: 100%; height: 160px; object-fit: cover; }
+
+.product-card-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+
+.product-brand { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.product-name { font-weight: 400; font-size: 0.88rem; margin-bottom: 8px; line-height: 1.5; }
+.product-desc { font-size: 0.78rem; color: var(--text-light); line-height: 1.7; flex: 1; margin-bottom: 16px; }
+.product-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border-light); }
+.product-price { font-family: var(--font-display); font-size: 1.1rem; color: var(--accent); }
+.product-size { font-size: 0.72rem; color: var(--text-muted); }
+.product-rec { display: inline-block; font-size: 0.6rem; background: var(--accent); color: var(--white); padding: 2px 8px; border-radius: 1px; margin-bottom: 10px; letter-spacing: 0.05em; width: fit-content; }
+
+/* ===== CAMPAIGN ===== */
+.campaign-section { background: var(--bg-dark); color: var(--bg); position: relative; overflow: hidden; }
+
+.campaign-bg-img {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1600&q=80&fit=crop') center center / cover no-repeat;
+  opacity: 0.12;
+}
+
+.campaign-section .section-label { color: var(--accent-light); }
+.campaign-section .section-title { color: var(--bg); }
+.campaign-section .section-subtitle { color: rgba(250,248,245,0.5); }
+.campaign-section .divider { background: var(--accent-light); }
+
+.campaign-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; z-index: 2; }
+
+.campaign-card {
+  padding: 28px 24px; border: 1px solid rgba(250,248,245,0.08);
+  border-radius: 4px; background: rgba(26,22,18,0.6); backdrop-filter: blur(8px);
+  transition: border-color 0.3s, background 0.3s;
+}
+.campaign-card:hover { border-color: rgba(196,164,74,0.3); background: rgba(26,22,18,0.7); }
+
+.campaign-name { font-family: var(--font-serif-jp); font-weight: 400; font-size: 0.95rem; margin-bottom: 10px; color: var(--accent-light); }
+.campaign-desc { font-size: 0.82rem; color: rgba(250,248,245,0.65); line-height: 1.8; margin-bottom: 12px; }
+.campaign-period { font-size: 0.7rem; color: rgba(250,248,245,0.35); }
+
+/* ===== FAQ ===== */
+.faq-section { background: var(--white); }
+
+.faq-list { max-width: 800px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--border-light); }
+
+.faq-question {
+  width: 100%; text-align: left; background: none; border: none; padding: 20px 0;
+  font-family: var(--font-body); font-size: 0.9rem; font-weight: 400; color: var(--text);
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; line-height: 1.6;
+}
+.faq-question:hover { color: var(--accent); }
+
+.faq-icon { font-size: 1.2rem; flex-shrink: 0; transition: transform 0.3s; color: var(--text-muted); font-weight: 200; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-item.open .faq-answer { max-height: 300px; padding-bottom: 20px; }
+.faq-answer p { font-size: 0.85rem; color: var(--text-light); line-height: 1.9; }
+
+.faq-cat-filter { display: flex; gap: 8px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+.faq-cat-btn {
+  font-family: var(--font-body); font-size: 0.75rem; padding: 8px 16px;
+  border: 1px solid var(--border); border-radius: 20px; background: transparent;
+  color: var(--text-light); cursor: pointer; transition: all 0.3s;
+}
+.faq-cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+.faq-cat-btn.active { background: var(--bg-dark); border-color: var(--bg-dark); color: var(--bg); }
+
+/* ===== ACCESS ===== */
+.access-section { background: var(--bg); }
+
+.access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+
+.access-info-group { margin-bottom: 28px; }
+.access-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.access-text { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; }
+
+.access-table { width: 100%; border-collapse: collapse; }
+.access-table td { padding: 10px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+.access-table td:first-child { width: 100px; color: var(--text-muted); font-size: 0.78rem; }
+
+.access-images {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-radius: 4px; overflow: hidden;
+}
+.access-images img { width: 100%; height: 200px; object-fit: cover; }
+.access-images img:first-child { grid-column: 1 / -1; height: 240px; }
+
+.access-parking {
+  margin-top: 12px; padding: 16px; background: var(--white); border-radius: 4px;
+  border: 1px solid var(--border-light); font-size: 0.82rem; color: var(--text-light); line-height: 1.7;
+}
+
+/* ===== FOOTER CTA ===== */
+.footer-cta {
+  padding: 100px 0; text-align: center; position: relative; overflow: hidden;
+}
+
+.footer-cta-bg {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1600&q=80&fit=crop') center center / cover no-repeat;
+}
+.footer-cta-overlay {
+  position: absolute; inset: 0;
+  background: rgba(26,22,18,0.82);
+}
+
+.footer-cta-content { position: relative; z-index: 2; }
+
+.footer-cta h2 {
+  font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 300; color: var(--bg); letter-spacing: 0.04em; margin-bottom: 12px;
+}
+.footer-cta p { font-family: var(--font-serif-jp); font-weight: 200; font-size: 0.9rem; color: rgba(250,248,245,0.5); margin-bottom: 32px; }
+.footer-cta .btn-primary { padding: 16px 48px; font-size: 0.85rem; }
+
+/* ===== FOOTER ===== */
+.footer { background: var(--bg-dark); border-top: 1px solid rgba(250,248,245,0.06); padding: 40px 0; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-family: var(--font-display); font-size: 1.2rem; color: rgba(250,248,245,0.6); letter-spacing: 0.12em; }
+.footer-links { display: flex; gap: 24px; list-style: none; }
+.footer-links a { font-size: 0.75rem; color: rgba(250,248,245,0.35); text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--accent-light); }
+.footer-copy { font-size: 0.7rem; color: rgba(250,248,245,0.2); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .products-scroll { grid-template-columns: repeat(2, 1fr); }
+  .campaign-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .section-padding { padding: 60px 0; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links.open {
+    display: flex; flex-direction: column; position: absolute;
+    top: 72px; left: 0; right: 0; background: rgba(250,248,245,0.97);
+    backdrop-filter: blur(20px); padding: 24px; gap: 20px; border-bottom: 1px solid var(--border-light);
+  }
+  .hero-content { grid-template-columns: 1fr; gap: 40px; padding-top: 100px; padding-bottom: 60px; }
+  .hero-visual { height: 260px; }
+  .hero-card-1 { width: 200px; top: 0; right: 0; padding: 20px; }
+  .hero-card-2 { width: 200px; bottom: 0; left: 0; padding: 20px; }
+  .hero-card-3 { display: none; }
+  .photo-break { height: 160px; }
+  .photo-break-full { height: 240px; }
+  .concept-grid, .menu-grid, .staff-grid, .products-scroll, .campaign-grid, .access-grid { grid-template-columns: 1fr; }
+  .access-images { grid-template-columns: 1fr; }
+  .access-images img, .access-images img:first-child { height: 180px; }
+  .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">BLOOM</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#concept">CONCEPT</a></li>
+      <li><a href="#menu">MENU</a></li>
+      <li><a href="#staff">STAFF</a></li>
+      <li><a href="#products">PRODUCTS</a></li>
+      <li><a href="#campaign">CAMPAIGN</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#access">ACCESS</a></li>
+      <li><a href="#booking" class="nav-cta">RESERVE</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge">Omotesando, Tokyo</div>
+      <h1 class="hero-title">Hair Salon<br>BL<span class="accent">OO</span>M</h1>
+      <p class="hero-title-jp">あなたらしさ、咲かせる場所</p>
+      <p class="hero-desc">一人ひとりの髪質・ライフスタイルに寄り添い、<br>あなただけの「似合う」を見つけるヘアサロン。<br>表参道駅徒歩5分。</p>
+      <div class="hero-actions">
+        <a href="#booking" class="btn btn-primary">ご予約はこちら</a>
+        <a href="#menu" class="btn btn-outline">メニューを見る</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-card hero-card-1">
+        <div class="hero-card-num">8</div>
+        <div class="hero-card-label">YEARS OF TRUST</div>
+        <div style="margin-top:8px; font-size:0.75rem; color:rgba(250,248,245,0.4);">2018年オープン</div>
+      </div>
+      <div class="hero-visual-card hero-card-2">
+        <div class="hero-card-text">骨格診断・パーソナルカラー診断に基づいた「似合わせ」カット。一人ひとりの個性を活かすスタイルをご提案。</div>
+      </div>
+      <div class="hero-visual-card hero-card-3">
+        <div class="hero-card-num">6</div>
+        <div class="hero-card-label">SPECIALISTS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO BREAK 1 -->
+<div class="photo-break">
+  <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700&q=80&fit=crop" alt="ヘアスタイル" loading="lazy">
+  <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=700&q=80&fit=crop" alt="美しい髪" loading="lazy">
+  <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=700&q=80&fit=crop" alt="ヘアカラー" loading="lazy">
+</div>
+
+<!-- CONCEPT -->
+<section class="concept section-padding" id="concept">
+  <div class="container">
+    <div class="section-header center fade-in">
+      <div class="section-label">Concept</div>
+      <h2 class="section-title">Why BLOOM</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">あなたの「なりたい」と「似合う」の交差点を見つけます</p>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-card fade-in delay-1">
+        <img class="concept-card-img" src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&q=80&fit=crop" alt="似合わせカット" loading="lazy">
+        <div class="concept-card-body">
+          <h3>似合わせカット</h3>
+          <p>骨格診断・パーソナルカラーに基づき、お客様の個性を最大限に引き出すカットをご提案。理論に裏打ちされたスタイルデザインを。</p>
+        </div>
+      </div>
+      <div class="concept-card fade-in delay-2">
+        <img class="concept-card-img" src="https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?w=600&q=80&fit=crop" alt="ダメージレスカラー" loading="lazy">
+        <div class="concept-card-body">
+          <h3>ダメージレス施術</h3>
+          <p>ケアブリーチ・オーガニックカラー・酸熱トリートメントなど、髪への負担を最小限に抑えた施術を追求。美しい髪は、健やかな髪から。</p>
+        </div>
+      </div>
+      <div class="concept-card fade-in delay-3">
+        <img class="concept-card-img" src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=600&q=80&fit=crop" alt="くつろぎの空間" loading="lazy">
+        <div class="concept-card-body">
+          <h3>居心地のよい空間</h3>
+          <p>完全個室・半個室・キッズスペース完備。周りを気にせずくつろげるプライベート空間で、ドリンクとともにリラックスしたひとときを。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section section-padding" id="menu">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Menu</div>
+      <h2 class="section-title">Price List</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">すべて税込価格です。指名料は別途いただいております。</p>
+    </div>
+    <div class="menu-tabs fade-in" id="menuTabs">
+      <button class="menu-tab active" data-tab="set">セットメニュー</button>
+      <button class="menu-tab" data-tab="cut">カット</button>
+      <button class="menu-tab" data-tab="color">カラー</button>
+      <button class="menu-tab" data-tab="perm">パーマ・縮毛矯正</button>
+      <button class="menu-tab" data-tab="treatment">トリートメント</button>
+      <button class="menu-tab" data-tab="headspa">ヘッドスパ</button>
+      <button class="menu-tab" data-tab="eyelash">まつ毛</button>
+      <button class="menu-tab" data-tab="other">その他</button>
+    </div>
+    <div id="menuPanels"></div>
+  </div>
+</section>
+
+<!-- PHOTO BREAK 2 -->
+<div class="photo-break-full">
+  <img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=1600&q=80&fit=crop" alt="サロンの雰囲気" loading="lazy">
+  <div class="photo-break-full-overlay"></div>
+</div>
+
+<!-- STAFF -->
+<section class="staff-section section-padding" id="staff">
+  <div class="container">
+    <div class="section-header center fade-in">
+      <div class="section-label">Staff</div>
+      <h2 class="section-title">Our Stylists</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">経験豊富なスタイリストがあなたの「似合う」を見つけます</p>
+    </div>
+    <div class="staff-grid" id="staffGrid"></div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section section-padding" id="products">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Products</div>
+      <h2 class="section-title">Recommended Items</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">サロン専売品を多数取り揃え。施術当日2点以上購入で10%OFF。</p>
+    </div>
+    <div class="products-scroll" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- CAMPAIGN -->
+<section class="campaign-section section-padding" id="campaign">
+  <div class="campaign-bg-img"></div>
+  <div class="container" style="position:relative; z-index:2;">
+    <div class="section-header center fade-in">
+      <div class="section-label">Campaign</div>
+      <h2 class="section-title">Special Offers</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">お得なキャンペーン・クーポンをご用意しています</p>
+    </div>
+    <div class="campaign-grid" id="campaignGrid"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section section-padding" id="faq">
+  <div class="container">
+    <div class="section-header center fade-in">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">よくあるご質問</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="faq-cat-filter" id="faqFilter"></div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="access-section section-padding" id="access">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Access</div>
+      <h2 class="section-title">Salon Information</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="access-grid">
+      <div class="fade-in">
+        <div class="access-info-group">
+          <div class="access-label">Address</div>
+          <div class="access-text">〒150-0001 東京都渋谷区神宮前3-12-8 BLOOMビル 2F</div>
+        </div>
+        <div class="access-info-group">
+          <div class="access-label">Access</div>
+          <div class="access-text">東京メトロ「表参道駅」A2出口より徒歩5分<br>明治通り沿い、1階がカフェ「GREEN LEAF」のビル2階</div>
+        </div>
+        <div class="access-info-group">
+          <div class="access-label">Hours</div>
+          <table class="access-table">
+            <tr><td>平日</td><td>10:00〜21:00</td></tr>
+            <tr><td>土曜</td><td>9:00〜20:00</td></tr>
+            <tr><td>日祝</td><td>9:00〜19:00</td></tr>
+            <tr><td>定休日</td><td>毎週火曜・第3水曜</td></tr>
+          </table>
+        </div>
+        <div class="access-info-group">
+          <div class="access-label">Contact</div>
+          <div class="access-text">TEL: 03-5555-8720<br>LINE: @bloom-hair<br>Instagram: @hairsalon_bloom</div>
+        </div>
+        <div class="access-info-group">
+          <div class="access-label">Payment</div>
+          <div class="access-text">現金 / クレジットカード（VISA・Mastercard・JCB・AMEX・Diners）<br>電子マネー（iD・QUICPay・交通系IC）<br>QRコード（PayPay・LINE Pay・楽天ペイ・d払い・au PAY）</div>
+        </div>
+      </div>
+      <div class="fade-in delay-2">
+        <div class="access-images">
+          <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=800&q=80&fit=crop" alt="サロン外観" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=400&q=80&fit=crop" alt="サロン内装" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80&fit=crop" alt="施術風景" loading="lazy">
+        </div>
+        <div class="access-parking">
+          📍 専用駐車場はございません。提携駐車場「タイムズ神宮前第5」をご利用ください（60分200円引き）。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<section class="footer-cta" id="booking">
+  <div class="footer-cta-bg"></div>
+  <div class="footer-cta-overlay"></div>
+  <div class="footer-cta-content container">
+    <h2 class="fade-in">Reserve Your Visit</h2>
+    <p class="fade-in delay-1">あなたの「なりたい」を聞かせてください</p>
+    <div class="fade-in delay-2">
+      <a href="tel:0355558720" class="btn btn-primary">03-5555-8720</a>
+    </div>
+    <p class="fade-in delay-3" style="margin-top:16px; font-size:0.75rem; color:rgba(250,248,245,0.35);">LINE @bloom-hair からもご予約いただけます</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-logo">BLOOM</div>
+    <ul class="footer-links">
+      <li><a href="#concept">Concept</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#staff">Staff</a></li>
+      <li><a href="#access">Access</a></li>
+    </ul>
+    <div class="footer-copy">&copy; 2025 Hair Salon BLOOM. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// ===== DATA =====
+const menuData = {
+  set: [
+    { name: "カット＋カラー", price: 14300, duration: 120, desc: "一番人気のセットメニュー。単品合計より1,100円お得。", rec: true },
+    { name: "カット＋イルミナカラー", price: 16500, duration: 130, desc: "透明感カラーとカットのセット。" },
+    { name: "カット＋カラー＋トリートメント", price: 18700, duration: 140, desc: "カラーの持ち・ツヤをアップ。単品合計より2,200円お得。", rec: true },
+    { name: "カット＋パーマ", price: 14300, duration: 150, desc: "デジタルパーマの場合は+3,300円。" },
+    { name: "カット＋縮毛矯正", price: 23100, duration: 210, desc: "プレミアムトリートメント付き。" },
+    { name: "カット＋カラー＋ヘッドスパ", price: 17600, duration: 150, desc: "贅沢な至福の時間。" },
+    { name: "髪質改善フルコース", price: 28600, duration: 180, desc: "カット＋髪質改善＋プレミアムヘッドスパ。最高の髪質改善体験。", rec: true },
+    { name: "ブライダルパッケージ（3回コース）", price: 55000, duration: null, desc: "挙式に向けた計画的なケア。リハーサルセット1回付き。" }
+  ],
+  cut: [
+    { name: "カット", price: 6600, duration: 60, desc: "シャンプー・ブロー込み。骨格や髪質に合わせたカット。" },
+    { name: "前髪カット", price: 1100, duration: 15, desc: "前髪のみ。単独でもOK。" },
+    { name: "メンズカット", price: 5500, duration: 50, desc: "シャンプー・ブロー込み。フェード・ツーブロック対応。" },
+    { name: "キッズカット（小学生以下）", price: 3300, duration: 40, desc: "12歳以下。保護者同伴。" },
+    { name: "学生カット（U25）", price: 4950, duration: 60, desc: "学生証の提示が必要。" }
+  ],
+  color: [
+    { name: "リタッチカラー（根元のみ）", price: 6600, duration: 60, desc: "根元3cm以内。3〜4週間以内の方に。" },
+    { name: "フルカラー", price: 8800, duration: 80, desc: "オーガニック成分配合カラー剤使用。" },
+    { name: "イルミナカラー", price: 11000, duration: 90, desc: "赤みを抑え透明感を実現。ダメージ最小限。", rec: true },
+    { name: "アディクシーカラー", price: 9900, duration: 80, desc: "高彩度でクリアな発色。" },
+    { name: "ハイライト / ローライト", price: 5500, duration: 30, desc: "10枚5,500円〜。立体感と動きをプラス。" },
+    { name: "バレイヤージュ", price: 16500, duration: 120, desc: "手塗りグラデーション。伸びても自然。", rec: true },
+    { name: "ブリーチ（1回）", price: 8800, duration: 60, desc: "ケアブリーチ使用。2回目以降+6,600円。" },
+    { name: "白髪ぼかしハイライト", price: 11000, duration: 90, desc: "白髪をおしゃれにぼかす人気テクニック。", rec: true },
+    { name: "ヘアマニキュア", price: 7700, duration: 60, desc: "ジアミンアレルギーの方も安心。" },
+    { name: "香草カラー（ヘナ）", price: 8800, duration: 90, desc: "天然ヘナ使用。ハリ・コシもアップ。" }
+  ],
+  perm: [
+    { name: "デジタルパーマ", price: 13200, duration: 120, desc: "乾かすだけでカール再現。3〜4ヶ月キープ。" },
+    { name: "コールドパーマ", price: 9900, duration: 90, desc: "ウェット時のカール感が強い。ムース仕上げに◎。" },
+    { name: "エアウェーブ", price: 14300, duration: 120, desc: "低温でダメージ最小限。ふんわり柔らかな質感。" },
+    { name: "ポイントパーマ", price: 5500, duration: 60, desc: "前髪やトップなど部分的に。メンズにも◎。" },
+    { name: "縮毛矯正", price: 18700, duration: 180, desc: "髪質改善成分配合の薬剤で自然な仕上がり。" },
+    { name: "前髪縮毛矯正", price: 5500, duration: 60, desc: "前髪のクセが気になる方に。" },
+    { name: "メンズパーマ（ツイスト/スパイラル）", price: 9900, duration: 90, desc: "ツイストスパイラルは+2,200円。" }
+  ],
+  treatment: [
+    { name: "クイックトリートメント", price: 2200, duration: 10, desc: "3ステップの簡易ケア。オプションに人気。" },
+    { name: "プレミアムトリートメント", price: 5500, duration: 20, desc: "5ステップ集中ケア。4〜6週間持続。", rec: true },
+    { name: "髪質改善トリートメント（酸熱）", price: 15400, duration: 90, desc: "クセ・うねりを緩和しツヤ髪に。月1×3回推奨。", rec: true },
+    { name: "超音波トリートメント", price: 7700, duration: 30, desc: "超音波で成分を深部まで浸透。極上のツヤ。" },
+    { name: "Tokio Inkarami トリートメント", price: 8800, duration: 30, desc: "毛髪強度を140%回復。業界最高峰。", rec: true }
+  ],
+  headspa: [
+    { name: "クイックヘッドスパ", price: 3300, duration: 20, desc: "頭皮クレンジング＋マッサージ。" },
+    { name: "プレミアムヘッドスパ", price: 6600, duration: 40, desc: "頭皮診断→クレンジング→マッサージ→保湿。", rec: true },
+    { name: "炭酸ヘッドスパ", price: 4400, duration: 30, desc: "高濃度炭酸泉で毛穴汚れを除去。" },
+    { name: "育毛促進ヘッドスパ", price: 8800, duration: 50, desc: "育毛剤導入＋マッサージ＋LED照射。" }
+  ],
+  eyelash: [
+    { name: "まつ毛パーマ（パリジェンヌ含む）", price: 6600, duration: 60, desc: "根元から80度立ち上げ。" },
+    { name: "フラットラッシュ 80本", price: 6600, duration: 60, desc: "ナチュラルな仕上がり。初めての方に◎。" },
+    { name: "フラットラッシュ 120本", price: 8800, duration: 80, desc: "目元パッチリの人気本数。", rec: true },
+    { name: "フラットラッシュ 160本", price: 11000, duration: 100, desc: "しっかりボリューム。" },
+    { name: "ボリュームラッシュ 300本", price: 8800, duration: 80, desc: "極細毛を束にして。ふさふさ軽い。" },
+    { name: "ボリュームラッシュ 500本", price: 13200, duration: 100, desc: "圧倒的なボリューム感。" },
+    { name: "オフのみ", price: 1650, duration: 30, desc: "他店分も対応。当店分は付替時無料。" }
+  ],
+  other: [
+    { name: "シャンプー＆ブロー", price: 3300, duration: 40, desc: "お出かけ前のセットに。" },
+    { name: "ヘアセット（アップスタイル）", price: 5500, duration: 45, desc: "結婚式・パーティー・成人式に。" },
+    { name: "着付け（浴衣）", price: 4400, duration: 30, desc: "7〜8月限定。ヘアセットと同時予約がおすすめ。" },
+    { name: "着付け（振袖・袴）", price: 11000, duration: 60, desc: "成人式・卒業式。要予約。" },
+    { name: "眉カット＆スタイリング", price: 1650, duration: 15, desc: "骨格に合わせたWAX美眉。" }
+  ]
+};
+
+const staffData = [
+  { name: "田中 翔太", role: "オーナー / トップスタイリスト", exp: 18, profile: "骨格診断とパーソナルカラー診断の資格を持ち、似合わせカットに定評。メンズも得意。", tags: ["似合わせカット","骨格診断","ハイトーン","メンズ"], fee: 1100, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&fit=crop&crop=face" },
+  { name: "佐藤 美咲", role: "トップスタイリスト", exp: 14, profile: "イルミナカラー公式アンバサダー。透明感カラーの達人。バレイヤージュ・白髪ぼかしも。", tags: ["イルミナカラー","バレイヤージュ","デザインカラー","白髪ぼかし"], fee: 880, img: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80&fit=crop&crop=face" },
+  { name: "山本 健一", role: "スタイリスト", exp: 8, profile: "メンズパーマのリピート率90%以上。丁寧なカウンセリングが好評。", tags: ["メンズパーマ","ナチュラル","ショート","縮毛矯正"], fee: 550, img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&fit=crop&crop=face" },
+  { name: "木村 あかり", role: "スタイリスト", exp: 5, profile: "韓国スタイルに精通。レイヤーカット・くびれヘアが得意。20〜30代女性から圧倒的支持。", tags: ["韓国風ヘア","レイヤー","くびれヘア","ヘッドスパ"], fee: 550, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&fit=crop&crop=face" },
+  { name: "鈴木 遥", role: "ジュニアスタイリスト", exp: 3, profile: "今年デビュー。ボブスタイルとヘアアレンジが得意。結婚式のセットも好評。", tags: ["ボブ","ヘアアレンジ","セットアップ"], fee: 0, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80&fit=crop&crop=face" },
+  { name: "伊藤 真理", role: "アイリスト", exp: 7, profile: "フラットラッシュとボリュームラッシュを得意とし、ナチュラルからゴージャスまで対応。", tags: ["フラットラッシュ","ボリュームラッシュ","まつ毛パーマ"], fee: 550, img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80&fit=crop&crop=face" }
+];
+
+const productImages = [
+  "https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1597354984706-fac992d9306f?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1599751449128-eb7249c3d6b1?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1590439471364-192aa70c0b53?w=400&q=80&fit=crop"
+];
+
+const productsData = [
+  { brand: "napla / N.", name: "ポリッシュオイル", price: 3740, size: "150mL", desc: "天然由来成分のみ。ウェットな質感・ツヤ出しに。当店人気No.1。", rec: true },
+  { brand: "Moroccanoil", name: "オイルトリートメント", price: 4730, size: "100mL", desc: "世界的ベストセラー。ツヤ・まとまり・指通りが抜群。", rec: true },
+  { brand: "Tokio Inkarami", name: "アウトカラミ オイル", price: 3520, size: "100mL", desc: "熱に反応して髪を補修。ドライヤー・アイロンの熱を味方に。", rec: true },
+  { brand: "Milbon / Aujua", name: "クエンチ シャンプー", price: 4180, size: "250mL", desc: "パサつきが気になる方に。保湿力に優れたサロン専売品。" },
+  { brand: "Tokio Inkarami", name: "プレミアム シャンプー", price: 3740, size: "200mL", desc: "サロントリートメントの持ちを高めるホームケア。" },
+  { brand: "napla / N.", name: "ナチュラルバーム", price: 2200, size: "45g", desc: "天然由来バーム。束感・まとまりに。ハンドクリームにも◎。" },
+  { brand: "KERASTASE", name: "ソワン オレオ リラックス", price: 4180, size: "125mL", desc: "くせ毛・広がりを抑える。梅雨の必須アイテム。" },
+  { brand: "ReFa", name: "ビューテック ドライヤー プロ", price: 43890, size: "1台", desc: "温風を自動調節しオーバードライを防ぐ。サロン仕上がりを自宅で。", rec: true }
+];
+
+const campaignData = [
+  { name: "新規限定 全メニュー20%OFF", desc: "ご新規様限定。予約時に「新規クーポン利用」とお伝えください。", period: "通年" },
+  { name: "LINE友だち登録で500円OFF", desc: "LINE公式アカウントを友だち追加でクーポンプレゼント。", period: "通年" },
+  { name: "お誕生日月 15%OFF", desc: "LINE友だち登録＆誕生日登録でお届け。カット以上対象。", period: "誕生日月" },
+  { name: "お友達紹介で双方に1,000円", desc: "紹介者・被紹介者双方にサービスチケットプレゼント。", period: "通年" },
+  { name: "平日タイムサービス", desc: "月・水・木の10:00〜15:00来店でカラー1,100円OFF。", period: "通年" },
+  { name: "学割U25", desc: "学生さん、カット4,950円＋カラー20%OFF。学生証提示。", period: "通年" },
+  { name: "施術当日ホームケア2点で10%OFF", desc: "シャンプー・トリートメント等2点以上購入で適用。", period: "通年" },
+  { name: "次回予約で500円OFF", desc: "お会計時に次回予約を確定で次回500円引き。", period: "通年" },
+  { name: "梅雨対策キャンペーン", desc: "縮毛矯正＋カット＋トリートメントが23,100円。", period: "6月〜7月" }
+];
+
+const faqData = [
+  { cat: "予約・来店", q: "予約なしでも来店できますか？", a: "当店は完全予約制です。当日空きがある場合は対応可能な場合もございますので、お電話でお問い合わせください。" },
+  { cat: "予約・来店", q: "キャンセルポリシーを教えてください。", a: "前日18:00までは無料、前日18:00以降はメニュー料金の50%、無断キャンセルは100%のキャンセル料が発生します。" },
+  { cat: "予約・来店", q: "子供を連れて行っても大丈夫ですか？", a: "キッズスペース完備。ベビーカーでの来店も歓迎です。個室のご用意も可能ですので、ご予約時にお申し付けください。" },
+  { cat: "メニュー・施術", q: "カラーとパーマは同日にできますか？", a: "基本的に可能ですが、髪の状態によっては2週間ほど間隔を空けることをおすすめする場合もございます。" },
+  { cat: "メニュー・施術", q: "髪質改善と縮毛矯正の違いは？", a: "縮毛矯正は薬剤と熱で強いクセもストレートに。髪質改善はダメージなくクセ・うねりを緩和しツヤを出します。軽いクセには髪質改善がおすすめです。" },
+  { cat: "メニュー・施術", q: "ブリーチなしで明るくできますか？", a: "ある程度の明るさは可能ですが、ミルクティーベージュ等はブリーチが必要です。当店はケアブリーチで負担を軽減しています。" },
+  { cat: "メニュー・施術", q: "白髪染めはできますか？", a: "フルカラー（8,800円）で対応可能。おしゃれに白髪を活かす「白髪ぼかしハイライト」（11,000円）も大人気です。" },
+  { cat: "メニュー・施術", q: "ヘッドスパだけでも来店できますか？", a: "はい、大歓迎です。20分3,300円〜40分6,600円まで、お時間やお悩みに合わせてお選びいただけます。" },
+  { cat: "メニュー・施術", q: "カラーアレルギーが心配です。", a: "無料のパッチテスト（48時間前）を実施しています。ジアミンフリーのヘアマニキュアや香草カラーもございます。" },
+  { cat: "料金・支払い", q: "クレジットカードは使えますか？", a: "VISA・Mastercard・JCB・AMEX・Diners、電子マネー、QRコード決済に対応しております。" },
+  { cat: "料金・支払い", q: "指名料はかかりますか？", a: "田中1,100円、佐藤880円、山本・木村・伊藤550円、鈴木は指名料無料です。フリーでの予約も可能です。" },
+  { cat: "料金・支払い", q: "お得なクーポンはありますか？", a: "新規20%OFF、LINE友だち500円OFF、誕生日15%OFF、紹介1,000円、平日タイムサービスなど多数ございます。" },
+  { cat: "その他", q: "男性でも通えますか？", a: "メンズカット5,500円をはじめ、メンズパーマ・ヘッドスパなど男性向けメニューも充実しております。" },
+  { cat: "その他", q: "個室はありますか？", a: "完全個室1部屋（追加料金なし・要予約）と半個室2ブースがございます。" },
+  { cat: "その他", q: "Wi-Fiはありますか？", a: "無料Wi-Fi完備。SSID「BLOOM-GUEST」で接続いただけます。" }
+];
+
+// ===== RENDER =====
+function renderMenu() {
+  const panels = document.getElementById('menuPanels');
+  let html = '';
+  for (const [key, items] of Object.entries(menuData)) {
+    html += `<div class="menu-panel ${key === 'set' ? 'active' : ''}" data-panel="${key}"><div class="menu-grid">`;
+    items.forEach(item => {
+      html += `<div class="menu-item"><div><div class="menu-item-name">${item.name} ${item.rec ? '<span class="menu-badge">おすすめ</span>' : ''}</div><div class="menu-item-desc">${item.desc}</div></div><div class="menu-item-right"><div class="menu-item-price">&yen;${item.price.toLocaleString()}</div>${item.duration ? `<div class="menu-item-duration">${item.duration}分</div>` : ''}</div></div>`;
+    });
+    html += '</div></div>';
+  }
+  panels.innerHTML = html;
+}
+
+document.getElementById('menuTabs').addEventListener('click', e => {
+  if (!e.target.classList.contains('menu-tab')) return;
+  document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelector(`[data-panel="${e.target.dataset.tab}"]`).classList.add('active');
+});
+
+function renderStaff() {
+  const grid = document.getElementById('staffGrid');
+  grid.innerHTML = staffData.map((s, i) => `
+    <div class="staff-card fade-in delay-${(i % 3) + 1}">
+      <img class="staff-card-img" src="${s.img}" alt="${s.name}" loading="lazy">
+      <div class="staff-card-body">
+        <div class="staff-name">${s.name}</div>
+        <div class="staff-role">${s.role}｜経験${s.exp}年</div>
+        <div class="staff-profile">${s.profile}</div>
+        <div class="staff-tags">${s.tags.map(t => `<span class="staff-tag">${t}</span>`).join('')}</div>
+        <div class="staff-nomination">指名料: ${s.fee ? '¥' + s.fee.toLocaleString() : '無料'}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = productsData.map((p, i) => `
+    <div class="product-card fade-in delay-${(i % 4) + 1}">
+      <img class="product-card-img" src="${productImages[i]}" alt="${p.name}" loading="lazy">
+      <div class="product-card-body">
+        ${p.rec ? '<div class="product-rec">STAFF PICK</div>' : ''}
+        <div class="product-brand">${p.brand}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-bottom">
+          <div class="product-price">&yen;${p.price.toLocaleString()}</div>
+          <div class="product-size">${p.size}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderCampaigns() {
+  const grid = document.getElementById('campaignGrid');
+  grid.innerHTML = campaignData.map((c, i) => `
+    <div class="campaign-card fade-in delay-${(i % 3) + 1}">
+      <div class="campaign-name">${c.name}</div>
+      <div class="campaign-desc">${c.desc}</div>
+      <div class="campaign-period">${c.period}</div>
+    </div>
+  `).join('');
+}
+
+function renderFAQ() {
+  const list = document.getElementById('faqList');
+  const filter = document.getElementById('faqFilter');
+  const cats = [...new Set(faqData.map(f => f.cat))];
+  filter.innerHTML = `<button class="faq-cat-btn active" data-cat="all">すべて</button>` + cats.map(c => `<button class="faq-cat-btn" data-cat="${c}">${c}</button>`).join('');
+  function render(cat) {
+    const filtered = cat === 'all' ? faqData : faqData.filter(f => f.cat === cat);
+    list.innerHTML = filtered.map(f => `<div class="faq-item"><button class="faq-question"><span>${f.q}</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>${f.a}</p></div></div>`).join('');
+    list.querySelectorAll('.faq-question').forEach(btn => { btn.addEventListener('click', () => btn.parentElement.classList.toggle('open')); });
+  }
+  render('all');
+  filter.addEventListener('click', e => {
+    if (!e.target.classList.contains('faq-cat-btn')) return;
+    filter.querySelectorAll('.faq-cat-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    render(e.target.dataset.cat);
+  });
+}
+
+// NAV
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+document.getElementById('hamburger').addEventListener('click', () => { document.getElementById('navLinks').classList.toggle('open'); });
+document.querySelectorAll('.nav-links a').forEach(a => { a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')); });
+
+// SCROLL ANIM
+const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
+function observeAll() { document.querySelectorAll('.fade-in').forEach(el => observer.observe(el)); }
+
+// INIT
+renderMenu();
+renderStaff();
+renderProducts();
+renderCampaigns();
+renderFAQ();
+setTimeout(observeAll, 100);
+</script>
+</body>
+</html>
