@@ -13,6 +13,7 @@
   --bg: #FAF8F5;
   --bg-warm: #F3EDE6;
   --bg-dark: #1A1612;
+  --bg-card: rgba(250,248,245,0.04);
   --text: #2C2420;
   --text-light: #6B5E54;
   --text-muted: #9B8E82;
@@ -61,71 +62,229 @@ body {
 }
 .nav-back:hover { color: var(--accent-light); }
 
-/* BOOKING PAGE */
-.booking-page { padding: 120px 24px 60px; max-width: 640px; margin: 0 auto; }
-
-.booking-form-header { text-align: center; margin-bottom: 48px; }
-.booking-form-header h1 {
-  font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 300; color: var(--bg); letter-spacing: 0.04em; margin-bottom: 12px;
+/* HERO BANNER */
+.booking-hero {
+  position: relative; padding: 140px 24px 60px; text-align: center;
+  background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(26,22,18,0.95) 100%);
+  overflow: hidden;
 }
-.booking-form-header .divider { width: 40px; height: 1px; background: var(--accent); margin: 20px auto; }
-.booking-form-header p {
-  font-family: var(--font-serif-jp); font-weight: 200; font-size: 0.9rem;
-  color: rgba(250,248,245,0.5);
+.booking-hero::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,105,20,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.booking-hero-label {
+  font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  position: relative;
+}
+.booking-hero h1 {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 6vw, 3.5rem);
+  font-weight: 300; color: var(--bg); letter-spacing: 0.06em; margin-bottom: 16px;
+  position: relative;
+}
+.booking-hero .divider {
+  width: 40px; height: 1px; background: var(--accent); margin: 0 auto 20px;
+}
+.booking-hero p {
+  font-family: var(--font-serif-jp); font-weight: 200; font-size: 0.92rem;
+  color: rgba(250,248,245,0.45); position: relative; max-width: 400px; margin: 0 auto;
 }
 
-.booking-form { display: flex; flex-direction: column; gap: 20px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group label { font-size: 0.78rem; color: rgba(250,248,245,0.6); letter-spacing: 0.05em; }
-.form-group label .required { color: var(--accent-light); margin-left: 4px; font-size: 0.65rem; }
+/* STEPS */
+.booking-steps {
+  display: flex; justify-content: center; gap: 0; padding: 0 24px;
+  max-width: 640px; margin: -20px auto 0; position: relative; z-index: 2;
+}
+.step {
+  flex: 1; text-align: center; padding: 20px 12px; position: relative;
+  border-bottom: 2px solid rgba(250,248,245,0.08); transition: all 0.3s;
+}
+.step.active { border-bottom-color: var(--accent); }
+.step.completed { border-bottom-color: var(--accent-light); }
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%; display: inline-flex;
+  align-items: center; justify-content: center; font-size: 0.72rem;
+  background: rgba(250,248,245,0.06); color: rgba(250,248,245,0.3);
+  margin-bottom: 8px; transition: all 0.3s; font-weight: 500;
+}
+.step.active .step-num { background: var(--accent); color: var(--white); }
+.step.completed .step-num { background: var(--accent-light); color: var(--white); }
+.step-label {
+  font-size: 0.68rem; color: rgba(250,248,245,0.25); letter-spacing: 0.05em;
+  transition: color 0.3s;
+}
+.step.active .step-label { color: rgba(250,248,245,0.7); }
+.step.completed .step-label { color: rgba(250,248,245,0.5); }
+
+/* FORM CONTAINER */
+.booking-container {
+  max-width: 640px; margin: 0 auto; padding: 40px 24px 60px;
+}
+
+/* FORM SECTIONS */
+.form-section {
+  background: var(--bg-card); border: 1px solid rgba(250,248,245,0.06);
+  border-radius: 8px; padding: 32px 28px; margin-bottom: 20px;
+  transition: opacity 0.4s, transform 0.4s;
+}
+.form-section-title {
+  font-family: var(--font-display); font-size: 1.1rem; color: var(--accent-light);
+  letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.form-section-desc {
+  font-size: 0.72rem; color: rgba(250,248,245,0.3); margin-bottom: 24px;
+}
+
+.booking-form { display: flex; flex-direction: column; gap: 0; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-group label {
+  font-size: 0.76rem; color: rgba(250,248,245,0.55); letter-spacing: 0.05em;
+  display: flex; align-items: center; gap: 4px;
+}
+.form-group label .required {
+  color: var(--accent-light); font-size: 0.6rem; padding: 1px 6px;
+  border: 1px solid rgba(196,164,74,0.3); border-radius: 2px;
+}
 .form-group input, .form-group select, .form-group textarea {
-  padding: 14px 16px; background: rgba(250,248,245,0.06); border: 1px solid rgba(250,248,245,0.12);
-  border-radius: 4px; color: var(--bg); font-family: var(--font-body); font-size: 0.88rem;
-  transition: border-color 0.3s;
+  padding: 14px 16px; background: rgba(250,248,245,0.04); border: 1px solid rgba(250,248,245,0.1);
+  border-radius: 6px; color: var(--bg); font-family: var(--font-body); font-size: 0.88rem;
+  transition: border-color 0.3s, background 0.3s;
 }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-  outline: none; border-color: var(--accent-light);
+  outline: none; border-color: var(--accent-light); background: rgba(250,248,245,0.06);
+}
+.form-group input::placeholder, .form-group textarea::placeholder {
+  color: rgba(250,248,245,0.2);
 }
 .form-group select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C4A44A' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 14px center;
 }
-.form-group select option { background: var(--bg-dark); color: var(--bg); }
+.form-group select option { background: #2a2420; color: var(--bg); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-group textarea { resize: vertical; min-height: 80px; }
+.form-row .form-group { margin-bottom: 0; }
+.form-group textarea { resize: vertical; min-height: 100px; }
 
+/* SUBMIT */
+.booking-submit-wrap { padding: 8px 0 0; }
 .booking-submit {
-  margin-top: 8px; padding: 16px; background: var(--accent); color: var(--white);
-  border: none; border-radius: 4px; font-family: var(--font-body); font-size: 0.88rem;
-  font-weight: 400; letter-spacing: 0.08em; cursor: pointer; transition: background 0.3s, transform 0.1s;
+  width: 100%; padding: 18px; background: var(--accent); color: var(--white);
+  border: none; border-radius: 6px; font-family: var(--font-body); font-size: 0.9rem;
+  font-weight: 400; letter-spacing: 0.1em; cursor: pointer;
+  transition: background 0.3s, transform 0.1s, box-shadow 0.3s;
+  box-shadow: 0 4px 20px rgba(139,105,20,0.3);
 }
-.booking-submit:hover { background: var(--accent-light); }
+.booking-submit:hover { background: var(--accent-light); box-shadow: 0 6px 28px rgba(139,105,20,0.4); }
 .booking-submit:active { transform: scale(0.98); }
-.booking-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.booking-submit:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
-.booking-result {
-  text-align: center; padding: 20px; border-radius: 4px; margin-top: 12px; font-size: 0.85rem; display: none;
+/* NOTES */
+.booking-notes {
+  margin-top: 24px; padding: 20px 24px; background: rgba(250,248,245,0.02);
+  border: 1px solid rgba(250,248,245,0.05); border-radius: 6px;
 }
-.booking-result.success { background: rgba(76,175,80,0.15); color: #81c784; display: block; }
-.booking-result.error { background: rgba(244,67,54,0.15); color: #ef9a9a; display: block; }
-
-.booking-note {
-  text-align: center; margin-top: 20px; font-size: 0.72rem;
-  color: rgba(250,248,245,0.3); line-height: 1.8;
+.booking-notes li {
+  font-size: 0.72rem; color: rgba(250,248,245,0.3); line-height: 2;
+  list-style: none; padding-left: 16px; position: relative;
+}
+.booking-notes li::before {
+  content: ''; position: absolute; left: 0; top: 11px;
+  width: 4px; height: 4px; border-radius: 50%; background: rgba(250,248,245,0.15);
 }
 
 /* SALON INFO */
 .booking-salon-info {
-  margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(250,248,245,0.08);
-  text-align: center;
+  margin-top: 32px; padding: 28px; text-align: center;
+  background: var(--bg-card); border: 1px solid rgba(250,248,245,0.06);
+  border-radius: 8px;
+}
+.booking-salon-info .salon-name {
+  font-family: var(--font-display); font-size: 1.1rem; color: rgba(250,248,245,0.5);
+  letter-spacing: 0.12em; margin-bottom: 12px;
 }
 .booking-salon-info p {
-  font-size: 0.78rem; color: rgba(250,248,245,0.35); line-height: 2;
+  font-size: 0.75rem; color: rgba(250,248,245,0.3); line-height: 2.2;
 }
 .booking-salon-info a { color: var(--accent-light); text-decoration: none; }
 .booking-salon-info a:hover { text-decoration: underline; }
+
+/* ===== COMPLETION SCREEN ===== */
+.booking-complete {
+  display: none; text-align: center; padding: 40px 24px 60px;
+  max-width: 640px; margin: 0 auto;
+  animation: fadeUp 0.6s ease;
+}
+.booking-complete.show { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.complete-icon {
+  width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 24px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 32px rgba(139,105,20,0.3);
+}
+.complete-icon svg { width: 36px; height: 36px; }
+
+.complete-title {
+  font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 300; color: var(--bg); letter-spacing: 0.04em; margin-bottom: 8px;
+}
+.complete-subtitle {
+  font-family: var(--font-serif-jp); font-weight: 200; font-size: 0.88rem;
+  color: rgba(250,248,245,0.45); margin-bottom: 36px;
+}
+
+.complete-card {
+  background: var(--bg-card); border: 1px solid rgba(250,248,245,0.08);
+  border-radius: 8px; padding: 32px 28px; text-align: left; margin-bottom: 20px;
+}
+.complete-card-title {
+  font-family: var(--font-display); font-size: 0.85rem; color: var(--accent-light);
+  letter-spacing: 0.1em; margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 1px solid rgba(250,248,245,0.06);
+}
+.complete-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px solid rgba(250,248,245,0.04);
+}
+.complete-row:last-child { border-bottom: none; }
+.complete-label { font-size: 0.75rem; color: rgba(250,248,245,0.35); min-width: 100px; }
+.complete-value { font-size: 0.85rem; color: rgba(250,248,245,0.8); text-align: right; flex: 1; }
+
+.complete-notice {
+  background: rgba(139,105,20,0.08); border: 1px solid rgba(139,105,20,0.15);
+  border-radius: 6px; padding: 20px 24px; margin-bottom: 28px;
+}
+.complete-notice p {
+  font-size: 0.78rem; color: rgba(250,248,245,0.5); line-height: 1.9;
+}
+.complete-notice strong { color: var(--accent-light); font-weight: 400; }
+
+.complete-actions { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+.btn-back {
+  display: inline-block; padding: 14px 36px; border-radius: 6px;
+  font-family: var(--font-body); font-size: 0.82rem; text-decoration: none;
+  letter-spacing: 0.06em; transition: all 0.3s;
+}
+.btn-back-primary {
+  background: var(--accent); color: var(--white);
+  box-shadow: 0 4px 16px rgba(139,105,20,0.3);
+}
+.btn-back-primary:hover { background: var(--accent-light); }
+.btn-back-outline {
+  background: transparent; color: rgba(250,248,245,0.5);
+  border: 1px solid rgba(250,248,245,0.12);
+}
+.btn-back-outline:hover { border-color: rgba(250,248,245,0.3); color: rgba(250,248,245,0.8); }
 
 /* TEST BANNER */
 .test-banner {
@@ -138,7 +297,13 @@ body {
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .form-row { grid-template-columns: 1fr; }
-  .booking-page { padding: 100px 16px 60px; }
+  .booking-hero { padding: 120px 20px 48px; }
+  .booking-container { padding: 32px 16px 60px; }
+  .form-section { padding: 24px 20px; }
+  .step-label { font-size: 0.6rem; }
+  .booking-steps { gap: 0; padding: 0 16px; }
+  .complete-actions { flex-direction: column; }
+  .btn-back { text-align: center; }
 }
 </style>
 </head>
@@ -151,85 +316,164 @@ body {
   </div>
 </nav>
 
-<main class="booking-page">
-  <div class="booking-form-header">
-    <h1>Reserve Your Visit</h1>
-    <div class="divider"></div>
-    <p>あなたの「なりたい」を聞かせてください</p>
-  </div>
+<!-- HERO -->
+<div class="booking-hero">
+  <div class="booking-hero-label">Reservation</div>
+  <h1>Reserve Your Visit</h1>
+  <div class="divider"></div>
+  <p>あなたの「なりたい」を聞かせてください</p>
+</div>
 
+<!-- STEPS -->
+<div class="booking-steps" id="bookingSteps">
+  <div class="step active" data-step="1">
+    <div class="step-num">1</div>
+    <div class="step-label">お客様情報</div>
+  </div>
+  <div class="step" data-step="2">
+    <div class="step-num">2</div>
+    <div class="step-label">日時・メニュー</div>
+  </div>
+  <div class="step" data-step="3">
+    <div class="step-num">3</div>
+    <div class="step-label">完了</div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="booking-container" id="bookingFormWrap">
   <form class="booking-form" id="bookingForm">
-    <div class="form-row">
-      <div class="form-group">
-        <label>お名前<span class="required">必須</span></label>
-        <input type="text" name="name" required placeholder="山田 花子">
+
+    <!-- SECTION 1: Customer Info -->
+    <div class="form-section">
+      <div class="form-section-title">Customer Information</div>
+      <div class="form-section-desc">お客様の情報をご入力ください</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>お名前 <span class="required">必須</span></label>
+          <input type="text" name="name" id="inputName" required placeholder="山田 花子">
+        </div>
+        <div class="form-group">
+          <label>フリガナ</label>
+          <input type="text" name="furigana" placeholder="ヤマダ ハナコ">
+        </div>
       </div>
-      <div class="form-group">
-        <label>電話番号<span class="required">必須</span></label>
-        <input type="tel" name="phone" required placeholder="090-1234-5678">
-      </div>
-    </div>
-    <div class="form-group">
-      <label>メールアドレス</label>
-      <input type="email" name="email" placeholder="example@email.com">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>ご希望日<span class="required">必須</span></label>
-        <input type="date" name="date" required>
-      </div>
-      <div class="form-group">
-        <label>ご希望時間<span class="required">必須</span></label>
-        <select name="time" required>
-          <option value="">選択してください</option>
-          <option>10:00</option><option>10:30</option>
-          <option>11:00</option><option>11:30</option>
-          <option>12:00</option><option>12:30</option>
-          <option>13:00</option><option>13:30</option>
-          <option>14:00</option><option>14:30</option>
-          <option>15:00</option><option>15:30</option>
-          <option>16:00</option><option>16:30</option>
-          <option>17:00</option><option>17:30</option>
-          <option>18:00</option><option>18:30</option>
-          <option>19:00</option>
-        </select>
+      <div class="form-row">
+        <div class="form-group">
+          <label>電話番号 <span class="required">必須</span></label>
+          <input type="tel" name="phone" required placeholder="090-1234-5678">
+        </div>
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" name="email" placeholder="example@email.com">
+        </div>
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>メニュー<span class="required">必須</span></label>
-        <select name="menu" id="bookingMenu" required>
-          <option value="">選択してください</option>
-        </select>
+
+    <!-- SECTION 2: Date & Menu -->
+    <div class="form-section">
+      <div class="form-section-title">Date &amp; Menu</div>
+      <div class="form-section-desc">ご希望の日時とメニューを選択してください</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ご希望日 <span class="required">必須</span></label>
+          <input type="date" name="date" id="inputDate" required>
+        </div>
+        <div class="form-group">
+          <label>ご希望時間 <span class="required">必須</span></label>
+          <select name="time" id="inputTime" required>
+            <option value="">選択してください</option>
+            <option>10:00</option><option>10:30</option>
+            <option>11:00</option><option>11:30</option>
+            <option>12:00</option><option>12:30</option>
+            <option>13:00</option><option>13:30</option>
+            <option>14:00</option><option>14:30</option>
+            <option>15:00</option><option>15:30</option>
+            <option>16:00</option><option>16:30</option>
+            <option>17:00</option><option>17:30</option>
+            <option>18:00</option><option>18:30</option>
+            <option>19:00</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>メニュー <span class="required">必須</span></label>
+          <select name="menu" id="bookingMenu" required>
+            <option value="">選択してください</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>担当スタイリスト</label>
+          <select name="stylist" id="bookingStylist">
+            <option value="指名なし">指名なし</option>
+          </select>
+        </div>
       </div>
       <div class="form-group">
-        <label>担当スタイリスト</label>
-        <select name="stylist" id="bookingStylist">
-          <option value="指名なし">指名なし</option>
-        </select>
+        <label>ご要望・備考</label>
+        <textarea name="note" placeholder="髪のお悩み、ご希望のスタイル、アレルギーなどがあればお聞かせください"></textarea>
       </div>
     </div>
-    <div class="form-group">
-      <label>ご要望・備考</label>
-      <textarea name="note" placeholder="髪のお悩み、希望のスタイルなどをお聞かせください"></textarea>
+
+    <!-- SUBMIT -->
+    <div class="booking-submit-wrap">
+      <button type="submit" class="booking-submit" id="bookingSubmit">予約リクエストを送信する</button>
     </div>
-    <button type="submit" class="booking-submit" id="bookingSubmit">予約を送信する</button>
-    <div class="booking-result" id="bookingResult"></div>
-    <div class="booking-note">
-      ※ ご予約の確定はサロンからの返信をもって完了となります<br>
-      ※ 当日・翌日のご予約はお電話（03-5555-8720）にてお願いいたします
-    </div>
+
+    <!-- NOTES -->
+    <ul class="booking-notes">
+      <li>ご予約の確定はサロンからの返信をもって完了となります</li>
+      <li>当日・翌日のご予約はお電話（03-5555-8720）にてお願いいたします</li>
+      <li>前日18:00以降のキャンセルはキャンセル料が発生します</li>
+      <li>メールアドレスをご入力いただくと確認メールをお送りします</li>
+    </ul>
+
   </form>
 
+  <!-- SALON INFO -->
   <div class="booking-salon-info">
+    <div class="salon-name">BLOOM</div>
     <p>
-      Hair Salon BLOOM<br>
       東京都渋谷区神宮前3-12-8 BLOOMビル 2F<br>
-      TEL: <a href="tel:0355558720">03-5555-8720</a><br>
-      LINE: @bloom-hair
+      TEL: <a href="tel:0355558720">03-5555-8720</a> ／ LINE: @bloom-hair<br>
+      営業時間: 平日 10:00〜21:00 ／ 土 9:00〜20:00 ／ 日祝 9:00〜19:00
     </p>
   </div>
-</main>
+</div>
+
+<!-- COMPLETION SCREEN -->
+<div class="booking-complete" id="bookingComplete">
+  <div class="complete-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  </div>
+  <div class="complete-title">Reservation Received</div>
+  <div class="complete-subtitle">ご予約リクエストを承りました</div>
+
+  <div class="complete-card">
+    <div class="complete-card-title">RESERVATION DETAILS</div>
+    <div class="complete-row"><span class="complete-label">お名前</span><span class="complete-value" id="confirmName"></span></div>
+    <div class="complete-row"><span class="complete-label">日時</span><span class="complete-value" id="confirmDateTime"></span></div>
+    <div class="complete-row"><span class="complete-label">メニュー</span><span class="complete-value" id="confirmMenu"></span></div>
+    <div class="complete-row"><span class="complete-label">担当</span><span class="complete-value" id="confirmStylist"></span></div>
+    <div class="complete-row"><span class="complete-label">ご要望</span><span class="complete-value" id="confirmNote"></span></div>
+  </div>
+
+  <div class="complete-notice">
+    <p>
+      <strong>ご予約はまだ確定しておりません。</strong><br>
+      サロンからの確認連絡（お電話またはメール）をもって予約確定となります。<br>
+      通常、営業時間内に1時間以内にご連絡いたします。
+    </p>
+  </div>
+
+  <div class="complete-actions">
+    <a href="index.html" class="btn-back btn-back-primary">トップページに戻る</a>
+    <a href="booking.html" class="btn-back btn-back-outline">続けて予約する</a>
+  </div>
+</div>
 
 <div class="test-banner">🛠 TEST SITE — これはチャットボット導入テスト用のデモサイトです。実際の店舗はありません。</div>
 
@@ -307,63 +551,107 @@ const staffData = [
 
 // ===== INIT =====
 (function() {
-  const menuSelect = document.getElementById('bookingMenu');
-  const stylistSelect = document.getElementById('bookingStylist');
-  const dateInput = document.querySelector('#bookingForm input[name="date"]');
+  var menuSelect = document.getElementById('bookingMenu');
+  var stylistSelect = document.getElementById('bookingStylist');
+  var dateInput = document.getElementById('inputDate');
 
   // Min date = tomorrow
-  const tomorrow = new Date();
+  var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   dateInput.min = tomorrow.toISOString().split('T')[0];
 
   // Populate menus
-  const categoryNames = { set: 'セットメニュー', cut: 'カット', color: 'カラー', perm: 'パーマ・矯正', treatment: 'トリートメント', headspa: 'ヘッドスパ', other: 'その他' };
-  for (const [key, items] of Object.entries(menuData)) {
-    const group = document.createElement('optgroup');
+  var categoryNames = { set: 'セットメニュー', cut: 'カット', color: 'カラー', perm: 'パーマ・矯正', treatment: 'トリートメント', headspa: 'ヘッドスパ', other: 'その他' };
+  for (var key in menuData) {
+    var group = document.createElement('optgroup');
     group.label = categoryNames[key] || key;
-    items.forEach(item => {
-      const opt = document.createElement('option');
+    menuData[key].forEach(function(item) {
+      var opt = document.createElement('option');
       opt.value = item.name;
-      opt.textContent = `${item.name}（¥${item.price.toLocaleString()}）`;
+      opt.textContent = item.name + '（¥' + item.price.toLocaleString() + '）';
       group.appendChild(opt);
     });
     menuSelect.appendChild(group);
   }
 
   // Populate stylists
-  staffData.forEach(s => {
-    const opt = document.createElement('option');
+  staffData.forEach(function(s) {
+    var opt = document.createElement('option');
     opt.value = s.name;
-    opt.textContent = `${s.name}（${s.role}）${s.fee ? ' +¥' + s.fee.toLocaleString() : ''}`;
+    opt.textContent = s.name + '（' + s.role + '）' + (s.fee ? ' +¥' + s.fee.toLocaleString() : '');
     stylistSelect.appendChild(opt);
   });
 
-  // Submit via hidden iframe (most reliable for GAS)
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWTfkgswTOAJRpgsnG_IN5MYq8VewF7Gib42_Z0y-Pkcq-WwD2N7lG-yUdgcUCIG-S/exec';
-  const form = document.getElementById('bookingForm');
+  // Step highlight on focus
+  var sections = document.querySelectorAll('.form-section');
+  var steps = document.querySelectorAll('.step');
+  sections.forEach(function(section, idx) {
+    section.addEventListener('focusin', function() {
+      steps.forEach(function(s, i) {
+        s.classList.remove('active');
+        if (i < idx) s.classList.add('completed');
+        else s.classList.remove('completed');
+      });
+      steps[idx].classList.add('active');
+    });
+  });
+
+  // Submit via hidden iframe
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbwWTfkgswTOAJRpgsnG_IN5MYq8VewF7Gib42_Z0y-Pkcq-WwD2N7lG-yUdgcUCIG-S/exec';
+  var form = document.getElementById('bookingForm');
   form.action = GAS_URL;
   form.method = 'POST';
   form.target = 'gas-iframe';
 
-  // Create hidden iframe
-  const iframe = document.createElement('iframe');
+  var iframe = document.createElement('iframe');
   iframe.name = 'gas-iframe';
   iframe.style.display = 'none';
   document.body.appendChild(iframe);
 
   form.addEventListener('submit', function() {
-    const btn = document.getElementById('bookingSubmit');
-    const result = document.getElementById('bookingResult');
+    var btn = document.getElementById('bookingSubmit');
     btn.disabled = true;
     btn.textContent = '送信中...';
 
+    // Capture values before form resets
+    var name = document.getElementById('inputName').value;
+    var date = document.getElementById('inputDate').value;
+    var time = document.getElementById('inputTime').value;
+    var menu = document.getElementById('bookingMenu').value;
+    var stylist = document.getElementById('bookingStylist').value;
+    var note = form.querySelector('textarea[name="note"]').value;
+
+    // Format date for display
+    var d = new Date(date);
+    var weekdays = ['日','月','火','水','木','金','土'];
+    var dateStr = d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日（' + weekdays[d.getDay()] + '）' + time;
+
     setTimeout(function() {
-      result.className = 'booking-result success';
-      result.textContent = '予約リクエストを送信しました。サロンからの確認連絡をお待ちください。';
+      // Fill completion screen
+      document.getElementById('confirmName').textContent = name;
+      document.getElementById('confirmDateTime').textContent = dateStr;
+      document.getElementById('confirmMenu').textContent = menu;
+      document.getElementById('confirmStylist').textContent = stylist;
+      document.getElementById('confirmNote').textContent = note || 'なし';
+
+      // Update steps
+      steps.forEach(function(s) { s.classList.remove('active'); s.classList.add('completed'); });
+      steps[2].classList.remove('completed');
+      steps[2].classList.add('active');
+
+      // Show completion, hide form
+      document.getElementById('bookingFormWrap').style.display = 'none';
+      var complete = document.getElementById('bookingComplete');
+      complete.classList.add('show');
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Reset form
       form.reset();
       dateInput.min = tomorrow.toISOString().split('T')[0];
       btn.disabled = false;
-      btn.textContent = '予約を送信する';
+      btn.textContent = '予約リクエストを送信する';
     }, 2000);
   });
 })();
