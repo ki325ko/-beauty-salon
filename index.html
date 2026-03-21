@@ -401,11 +401,10 @@ img { display: block; max-width: 100%; }
 .access-table td { padding: 10px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border-light); vertical-align: top; }
 .access-table td:first-child { width: 100px; color: var(--text-muted); font-size: 0.78rem; }
 
-.access-images {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-radius: 4px; overflow: hidden;
+.access-map {
+  border-radius: 4px; overflow: hidden;
 }
-.access-images img { width: 100%; height: 200px; object-fit: cover; }
-.access-images img:first-child { grid-column: 1 / -1; height: 240px; }
+.access-map iframe { display: block; }
 
 .access-parking {
   margin-top: 12px; padding: 16px; background: var(--white); border-radius: 4px;
@@ -467,8 +466,6 @@ img { display: block; max-width: 100%; }
   .photo-break { height: 160px; }
   .photo-break-full { height: 240px; }
   .concept-grid, .menu-grid, .staff-grid, .products-scroll, .campaign-grid, .access-grid { grid-template-columns: 1fr; }
-  .access-images { grid-template-columns: 1fr; }
-  .access-images img, .access-images img:first-child { height: 180px; }
   .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
 }
 </style>
@@ -687,10 +684,8 @@ img { display: block; max-width: 100%; }
         </div>
       </div>
       <div class="fade-in delay-2">
-        <div class="access-images">
-          <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=800&q=80&fit=crop" alt="サロン外観" loading="lazy">
-          <img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=400&q=80&fit=crop" alt="サロン内装" loading="lazy">
-          <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80&fit=crop" alt="施術風景" loading="lazy">
+        <div class="access-map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.2!2d139.7085!3d35.6695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z5p2x5Lqs6YO95riL6LC35Yy656We5a6u5YmNMy0xMi04!5e0!3m2!1sja!2sjp!4v1" width="100%" height="400" style="border:0; border-radius:4px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="access-parking">
           📍 専用駐車場はございません。提携駐車場「タイムズ神宮前第5」をご利用ください（60分200円引き）。
