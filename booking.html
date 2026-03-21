@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご予約 | Hair Salon BLOOM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@200;300;400;500;600&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FAF8F5;
+  --bg-warm: #F3EDE6;
+  --bg-dark: #1A1612;
+  --text: #2C2420;
+  --text-light: #6B5E54;
+  --text-muted: #9B8E82;
+  --accent: #8B6914;
+  --accent-light: #C4A44A;
+  --accent-pale: #EDE4CC;
+  --white: #FFFFFF;
+  --border: #DDD5CA;
+  --border-light: #EDE8E1;
+  --shadow: rgba(26, 22, 18, 0.08);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-serif-jp: 'Noto Serif JP', serif;
+  --font-body: 'Noto Sans JP', sans-serif;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  color: var(--text);
+  background: var(--bg-dark);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(26, 22, 18, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(250,248,245,0.06);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; height: 72px;
+}
+.nav-logo {
+  font-family: var(--font-display); font-size: 1.4rem; font-weight: 400;
+  letter-spacing: 0.12em; color: rgba(250,248,245,0.8); text-decoration: none;
+}
+.nav-back {
+  font-size: 0.8rem; color: rgba(250,248,245,0.5); text-decoration: none;
+  transition: color 0.3s; display: flex; align-items: center; gap: 6px;
+}
+.nav-back:hover { color: var(--accent-light); }
+
+/* BOOKING PAGE */
+.booking-page { padding: 120px 24px 60px; max-width: 640px; margin: 0 auto; }
+
+.booking-form-header { text-align: center; margin-bottom: 48px; }
+.booking-form-header h1 {
+  font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 300; color: var(--bg); letter-spacing: 0.04em; margin-bottom: 12px;
+}
+.booking-form-header .divider { width: 40px; height: 1px; background: var(--accent); margin: 20px auto; }
+.booking-form-header p {
+  font-family: var(--font-serif-jp); font-weight: 200; font-size: 0.9rem;
+  color: rgba(250,248,245,0.5);
+}
+
+.booking-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 0.78rem; color: rgba(250,248,245,0.6); letter-spacing: 0.05em; }
+.form-group label .required { color: var(--accent-light); margin-left: 4px; font-size: 0.65rem; }
+.form-group input, .form-group select, .form-group textarea {
+  padding: 14px 16px; background: rgba(250,248,245,0.06); border: 1px solid rgba(250,248,245,0.12);
+  border-radius: 4px; color: var(--bg); font-family: var(--font-body); font-size: 0.88rem;
+  transition: border-color 0.3s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--accent-light);
+}
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C4A44A' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.form-group select option { background: var(--bg-dark); color: var(--bg); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+.booking-submit {
+  margin-top: 8px; padding: 16px; background: var(--accent); color: var(--white);
+  border: none; border-radius: 4px; font-family: var(--font-body); font-size: 0.88rem;
+  font-weight: 400; letter-spacing: 0.08em; cursor: pointer; transition: background 0.3s, transform 0.1s;
+}
+.booking-submit:hover { background: var(--accent-light); }
+.booking-submit:active { transform: scale(0.98); }
+.booking-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.booking-result {
+  text-align: center; padding: 20px; border-radius: 4px; margin-top: 12px; font-size: 0.85rem; display: none;
+}
+.booking-result.success { background: rgba(76,175,80,0.15); color: #81c784; display: block; }
+.booking-result.error { background: rgba(244,67,54,0.15); color: #ef9a9a; display: block; }
+
+.booking-note {
+  text-align: center; margin-top: 20px; font-size: 0.72rem;
+  color: rgba(250,248,245,0.3); line-height: 1.8;
+}
+
+/* SALON INFO */
+.booking-salon-info {
+  margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(250,248,245,0.08);
+  text-align: center;
+}
+.booking-salon-info p {
+  font-size: 0.78rem; color: rgba(250,248,245,0.35); line-height: 2;
+}
+.booking-salon-info a { color: var(--accent-light); text-decoration: none; }
+.booking-salon-info a:hover { text-decoration: underline; }
+
+/* TEST BANNER */
+.test-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 8500;
+  background: rgba(26, 26, 24, 0.95); padding: 10px 20px;
+  text-align: center; font-size: 0.68rem; color: var(--accent-light);
+  backdrop-filter: blur(8px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .form-row { grid-template-columns: 1fr; }
+  .booking-page { padding: 100px 16px 60px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">BLOOM</a>
+    <a href="index.html" class="nav-back">&larr; トップに戻る</a>
+  </div>
+</nav>
+
+<main class="booking-page">
+  <div class="booking-form-header">
+    <h1>Reserve Your Visit</h1>
+    <div class="divider"></div>
+    <p>あなたの「なりたい」を聞かせてください</p>
+  </div>
+
+  <form class="booking-form" id="bookingForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label>お名前<span class="required">必須</span></label>
+        <input type="text" name="name" required placeholder="山田 花子">
+      </div>
+      <div class="form-group">
+        <label>電話番号<span class="required">必須</span></label>
+        <input type="tel" name="phone" required placeholder="090-1234-5678">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>メールアドレス</label>
+      <input type="email" name="email" placeholder="example@email.com">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>ご希望日<span class="required">必須</span></label>
+        <input type="date" name="date" required>
+      </div>
+      <div class="form-group">
+        <label>ご希望時間<span class="required">必須</span></label>
+        <select name="time" required>
+          <option value="">選択してください</option>
+          <option>10:00</option><option>10:30</option>
+          <option>11:00</option><option>11:30</option>
+          <option>12:00</option><option>12:30</option>
+          <option>13:00</option><option>13:30</option>
+          <option>14:00</option><option>14:30</option>
+          <option>15:00</option><option>15:30</option>
+          <option>16:00</option><option>16:30</option>
+          <option>17:00</option><option>17:30</option>
+          <option>18:00</option><option>18:30</option>
+          <option>19:00</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>メニュー<span class="required">必須</span></label>
+        <select name="menu" id="bookingMenu" required>
+          <option value="">選択してください</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>担当スタイリスト</label>
+        <select name="stylist" id="bookingStylist">
+          <option value="指名なし">指名なし</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>ご要望・備考</label>
+      <textarea name="note" placeholder="髪のお悩み、希望のスタイルなどをお聞かせください"></textarea>
+    </div>
+    <button type="submit" class="booking-submit" id="bookingSubmit">予約を送信する</button>
+    <div class="booking-result" id="bookingResult"></div>
+    <div class="booking-note">
+      ※ ご予約の確定はサロンからの返信をもって完了となります<br>
+      ※ 当日・翌日のご予約はお電話（03-5555-8720）にてお願いいたします
+    </div>
+  </form>
+
+  <div class="booking-salon-info">
+    <p>
+      Hair Salon BLOOM<br>
+      東京都渋谷区神宮前3-12-8 BLOOMビル 2F<br>
+      TEL: <a href="tel:0355558720">03-5555-8720</a><br>
+      LINE: @bloom-hair
+    </p>
+  </div>
+</main>
+
+<div class="test-banner">🛠 TEST SITE — これはチャットボット導入テスト用のデモサイトです。実際の店舗はありません。</div>
+
+<script>
+// ===== MENU & STAFF DATA =====
+const menuData = {
+  set: [
+    { name: "カット＋カラー", price: 14300 },
+    { name: "カット＋イルミナカラー", price: 16500 },
+    { name: "カット＋カラー＋トリートメント", price: 18700 },
+    { name: "カット＋パーマ", price: 14300 },
+    { name: "カット＋縮毛矯正", price: 23100 },
+    { name: "カット＋カラー＋ヘッドスパ", price: 17600 },
+    { name: "髪質改善フルコース", price: 28600 },
+    { name: "ブライダルパッケージ（3回コース）", price: 55000 }
+  ],
+  cut: [
+    { name: "カット", price: 6600 },
+    { name: "前髪カット", price: 1100 },
+    { name: "メンズカット", price: 5500 },
+    { name: "キッズカット（小学生以下）", price: 3300 },
+    { name: "学生カット（U25）", price: 4950 }
+  ],
+  color: [
+    { name: "リタッチカラー（根元のみ）", price: 6600 },
+    { name: "フルカラー", price: 8800 },
+    { name: "イルミナカラー", price: 11000 },
+    { name: "アディクシーカラー", price: 9900 },
+    { name: "ハイライト / ローライト", price: 5500 },
+    { name: "バレイヤージュ", price: 16500 },
+    { name: "ブリーチ（1回）", price: 8800 },
+    { name: "白髪ぼかしハイライト", price: 11000 },
+    { name: "ヘアマニキュア", price: 7700 },
+    { name: "香草カラー（ヘナ）", price: 8800 }
+  ],
+  perm: [
+    { name: "デジタルパーマ", price: 13200 },
+    { name: "コールドパーマ", price: 9900 },
+    { name: "エアウェーブ", price: 14300 },
+    { name: "ポイントパーマ", price: 5500 },
+    { name: "縮毛矯正", price: 18700 },
+    { name: "前髪縮毛矯正", price: 5500 },
+    { name: "メンズパーマ（ツイスト/スパイラル）", price: 9900 }
+  ],
+  treatment: [
+    { name: "クイックトリートメント", price: 2200 },
+    { name: "プレミアムトリートメント", price: 5500 },
+    { name: "髪質改善トリートメント（酸熱）", price: 15400 },
+    { name: "超音波トリートメント", price: 7700 },
+    { name: "Tokio Inkarami トリートメント", price: 8800 }
+  ],
+  headspa: [
+    { name: "クイックヘッドスパ", price: 3300 },
+    { name: "プレミアムヘッドスパ", price: 6600 },
+    { name: "炭酸ヘッドスパ", price: 4400 },
+    { name: "育毛促進ヘッドスパ", price: 8800 }
+  ],
+  other: [
+    { name: "シャンプー＆ブロー", price: 3300 },
+    { name: "ヘアセット（アップスタイル）", price: 5500 },
+    { name: "着付け（浴衣）", price: 4400 },
+    { name: "着付け（振袖・袴）", price: 11000 },
+    { name: "眉カット＆スタイリング", price: 1650 }
+  ]
+};
+
+const staffData = [
+  { name: "田中 翔太", role: "オーナー / トップスタイリスト", fee: 1100 },
+  { name: "佐藤 美咲", role: "トップスタイリスト", fee: 880 },
+  { name: "山本 健一", role: "スタイリスト", fee: 550 },
+  { name: "伊藤 真理", role: "スタイリスト", fee: 550 },
+  { name: "木村 あかり", role: "スタイリスト", fee: 550 },
+  { name: "鈴木 遥", role: "ジュニアスタイリスト", fee: 0 }
+];
+
+// ===== INIT =====
+(function() {
+  const menuSelect = document.getElementById('bookingMenu');
+  const stylistSelect = document.getElementById('bookingStylist');
+  const dateInput = document.querySelector('#bookingForm input[name="date"]');
+
+  // Min date = tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  dateInput.min = tomorrow.toISOString().split('T')[0];
+
+  // Populate menus
+  const categoryNames = { set: 'セットメニュー', cut: 'カット', color: 'カラー', perm: 'パーマ・矯正', treatment: 'トリートメント', headspa: 'ヘッドスパ', other: 'その他' };
+  for (const [key, items] of Object.entries(menuData)) {
+    const group = document.createElement('optgroup');
+    group.label = categoryNames[key] || key;
+    items.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.name;
+      opt.textContent = `${item.name}（¥${item.price.toLocaleString()}）`;
+      group.appendChild(opt);
+    });
+    menuSelect.appendChild(group);
+  }
+
+  // Populate stylists
+  staffData.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.name;
+    opt.textContent = `${s.name}（${s.role}）${s.fee ? ' +¥' + s.fee.toLocaleString() : ''}`;
+    stylistSelect.appendChild(opt);
+  });
+
+  // Submit
+  document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('bookingSubmit');
+    const result = document.getElementById('bookingResult');
+    btn.disabled = true;
+    btn.textContent = '送信中...';
+    result.className = 'booking-result';
+    result.style.display = 'none';
+
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const GAS_URL = 'YOUR_GAS_DEPLOYMENT_URL';
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      result.className = 'booking-result success';
+      result.textContent = '予約リクエストを送信しました。サロンからの確認連絡をお待ちください。';
+      this.reset();
+      dateInput.min = tomorrow.toISOString().split('T')[0];
+    } catch (err) {
+      result.className = 'booking-result error';
+      result.textContent = '送信に失敗しました。お手数ですがお電話でご予約ください。';
+    }
+    btn.disabled = false;
+    btn.textContent = '予約を送信する';
+  });
+})();
+</script>
+</body>
+</html>
