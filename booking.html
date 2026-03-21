@@ -353,10 +353,9 @@ const staffData = [
 
     try {
       const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWTfkgswTOAJRpgsnG_IN5MYq8VewF7Gib42_Z0y-Pkcq-WwD2N7lG-yUdgcUCIG-S/exec';
-      const res = await fetch(GAS_URL, {
+      await fetch(GAS_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
       result.className = 'booking-result success';
