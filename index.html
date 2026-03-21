@@ -585,7 +585,6 @@ img { display: block; max-width: 100%; }
       <button class="menu-tab" data-tab="perm">パーマ・縮毛矯正</button>
       <button class="menu-tab" data-tab="treatment">トリートメント</button>
       <button class="menu-tab" data-tab="headspa">ヘッドスパ</button>
-      <button class="menu-tab" data-tab="eyelash">まつ毛</button>
       <button class="menu-tab" data-tab="other">その他</button>
     </div>
     <div id="menuPanels"></div>
@@ -783,15 +782,6 @@ const menuData = {
     { name: "炭酸ヘッドスパ", price: 4400, duration: 30, desc: "高濃度炭酸泉で毛穴汚れを除去。" },
     { name: "育毛促進ヘッドスパ", price: 8800, duration: 50, desc: "育毛剤導入＋マッサージ＋LED照射。" }
   ],
-  eyelash: [
-    { name: "まつ毛パーマ（パリジェンヌ含む）", price: 6600, duration: 60, desc: "根元から80度立ち上げ。" },
-    { name: "フラットラッシュ 80本", price: 6600, duration: 60, desc: "ナチュラルな仕上がり。初めての方に◎。" },
-    { name: "フラットラッシュ 120本", price: 8800, duration: 80, desc: "目元パッチリの人気本数。", rec: true },
-    { name: "フラットラッシュ 160本", price: 11000, duration: 100, desc: "しっかりボリューム。" },
-    { name: "ボリュームラッシュ 300本", price: 8800, duration: 80, desc: "極細毛を束にして。ふさふさ軽い。" },
-    { name: "ボリュームラッシュ 500本", price: 13200, duration: 100, desc: "圧倒的なボリューム感。" },
-    { name: "オフのみ", price: 1650, duration: 30, desc: "他店分も対応。当店分は付替時無料。" }
-  ],
   other: [
     { name: "シャンプー＆ブロー", price: 3300, duration: 40, desc: "お出かけ前のセットに。" },
     { name: "ヘアセット（アップスタイル）", price: 5500, duration: 45, desc: "結婚式・パーティー・成人式に。" },
@@ -802,12 +792,12 @@ const menuData = {
 };
 
 const staffData = [
-  { name: "田中 翔太", role: "オーナー / トップスタイリスト", exp: 18, profile: "骨格診断とパーソナルカラー診断の資格を持ち、似合わせカットに定評。メンズも得意。", tags: ["似合わせカット","骨格診断","ハイトーン","メンズ"], fee: 1100, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&fit=crop&crop=face" },
-  { name: "佐藤 美咲", role: "トップスタイリスト", exp: 14, profile: "イルミナカラー公式アンバサダー。透明感カラーの達人。バレイヤージュ・白髪ぼかしも。", tags: ["イルミナカラー","バレイヤージュ","デザインカラー","白髪ぼかし"], fee: 880, img: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80&fit=crop&crop=face" },
-  { name: "山本 健一", role: "スタイリスト", exp: 8, profile: "メンズパーマのリピート率90%以上。丁寧なカウンセリングが好評。", tags: ["メンズパーマ","ナチュラル","ショート","縮毛矯正"], fee: 550, img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&fit=crop&crop=face" },
-  { name: "木村 あかり", role: "スタイリスト", exp: 5, profile: "韓国スタイルに精通。レイヤーカット・くびれヘアが得意。20〜30代女性から圧倒的支持。", tags: ["韓国風ヘア","レイヤー","くびれヘア","ヘッドスパ"], fee: 550, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&fit=crop&crop=face" },
-  { name: "鈴木 遥", role: "ジュニアスタイリスト", exp: 3, profile: "今年デビュー。ボブスタイルとヘアアレンジが得意。結婚式のセットも好評。", tags: ["ボブ","ヘアアレンジ","セットアップ"], fee: 0, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80&fit=crop&crop=face" },
-  { name: "伊藤 真理", role: "アイリスト", exp: 7, profile: "フラットラッシュとボリュームラッシュを得意とし、ナチュラルからゴージャスまで対応。", tags: ["フラットラッシュ","ボリュームラッシュ","まつ毛パーマ"], fee: 550, img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80&fit=crop&crop=face" }
+  { name: "田中 翔太", role: "オーナー / トップスタイリスト", exp: 18, profile: "骨格診断とパーソナルカラー診断の資格を持ち、似合わせカットに定評。メンズも得意。", tags: ["似合わせカット","骨格診断","ハイトーン","メンズ"], fee: 1100, img: "https://soapy-city-f1b.notion.site/image/attachment%3Ad25eca2d-e39d-45cc-bacd-246156f3365a%3A1.png?table=block&id=32a5d7a5-f34c-80f8-9dff-fecd7796dc48&spaceId=8406d56c-dda6-42a3-ad22-a0e3b620d9f6&width=2000&userId=&cache=v2" },
+  { name: "佐藤 美咲", role: "トップスタイリスト", exp: 14, profile: "イルミナカラー公式アンバサダー。透明感カラーの達人。バレイヤージュ・白髪ぼかしも。", tags: ["イルミナカラー","バレイヤージュ","デザインカラー","白髪ぼかし"], fee: 880, img: "https://soapy-city-f1b.notion.site/image/attachment%3A929fa10d-f760-4a2a-a30c-885254748205%3A2.png?table=block&id=32a5d7a5-f34c-8011-990f-e56c3d684f99&spaceId=8406d56c-dda6-42a3-ad22-a0e3b620d9f6&width=2000&userId=&cache=v2" },
+  { name: "山本 健一", role: "スタイリスト", exp: 8, profile: "メンズパーマのリピート率90%以上。丁寧なカウンセリングが好評。", tags: ["メンズパーマ","ナチュラル","ショート","縮毛矯正"], fee: 550, img: "https://soapy-city-f1b.notion.site/image/attachment%3Af9ad36c0-2317-4b3b-8225-66b63df1cc9e%3A3.png?table=block&id=32a5d7a5-f34c-8010-96eb-cd1ec699b64d&spaceId=8406d56c-dda6-42a3-ad22-a0e3b620d9f6&width=2000&userId=&cache=v2" },
+  { name: "伊藤 真理", role: "スタイリスト", exp: 7, profile: "ダメージレスなカラーリングと丁寧なカウンセリングが好評。トレンドを取り入れたスタイル提案が得意。", tags: ["デザインカラー","トレンドスタイル","ダメージレス","ヘアケア"], fee: 550, img: "https://soapy-city-f1b.notion.site/image/attachment%3Aa029ba8b-62a1-42c6-818a-7efdfcb7afb2%3A6.png?table=block&id=32a5d7a5-f34c-804b-9546-f62c7ad1bb6c&spaceId=8406d56c-dda6-42a3-ad22-a0e3b620d9f6&width=2000&userId=&cache=v2" },
+  { name: "木村 あかり", role: "スタイリスト", exp: 5, profile: "韓国スタイルに精通。レイヤーカット・くびれヘアが得意。20〜30代女性から圧倒的支持。", tags: ["韓国風ヘア","レイヤー","くびれヘア","ヘッドスパ"], fee: 550, img: "https://soapy-city-f1b.notion.site/image/attachment%3A06649755-664a-4395-b453-b85cbad384f5%3A4.png?table=block&id=32a5d7a5-f34c-8013-8a2f-ed5020757f03&spaceId=8406d56c-dda6-42a3-ad22-a0e3b620d9f6&width=2000&userId=&cache=v2" },
+  { name: "鈴木 遥", role: "ジュニアスタイリスト", exp: 3, profile: "今年デビュー。ボブスタイルとヘアアレンジが得意。結婚式のセットも好評。", tags: ["ボブ","ヘアアレンジ","セットアップ"], fee: 0, img: "https://soapy-city-f1b.notion.site/image/attachment%3A4e7a3b24-19af-4d40-afca-519ff41b4e45%3A5.png?table=block&id=32a5d7a5-f34c-80ed-bced-dc3e0b69d919&spaceId=8406d56c-dda6-42a3-ad22-a0e3b620d9f6&width=2000&userId=&cache=v2" }
 ];
 
 const productImages = [
