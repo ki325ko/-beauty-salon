@@ -170,6 +170,59 @@ body {
 .form-row .form-group { margin-bottom: 0; }
 .form-group textarea { resize: vertical; min-height: 100px; }
 
+/* MENU PICKER */
+.menu-tabs {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+}
+.menu-cat-btn {
+  padding: 6px 14px; border: 1px solid rgba(250,248,245,0.1); border-radius: 20px;
+  background: transparent; color: rgba(250,248,245,0.4); font-family: var(--font-body);
+  font-size: 0.72rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.menu-cat-btn:hover { border-color: rgba(250,248,245,0.25); color: rgba(250,248,245,0.6); }
+.menu-cat-btn.active { background: var(--accent); border-color: var(--accent); color: var(--white); }
+
+.menu-options {
+  display: flex; flex-direction: column; gap: 6px;
+  max-height: 240px; overflow-y: auto; padding-right: 4px;
+}
+.menu-options::-webkit-scrollbar { width: 3px; }
+.menu-options::-webkit-scrollbar-track { background: transparent; }
+.menu-options::-webkit-scrollbar-thumb { background: rgba(250,248,245,0.1); border-radius: 3px; }
+
+.menu-opt {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; border: 1px solid rgba(250,248,245,0.06); border-radius: 6px;
+  background: rgba(250,248,245,0.02); cursor: pointer; transition: all 0.2s; gap: 12px;
+}
+.menu-opt:hover { border-color: rgba(250,248,245,0.15); background: rgba(250,248,245,0.04); }
+.menu-opt.selected { border-color: var(--accent); background: rgba(139,105,20,0.1); }
+.menu-opt-name { font-size: 0.82rem; color: rgba(250,248,245,0.7); }
+.menu-opt.selected .menu-opt-name { color: var(--accent-light); }
+.menu-opt-price {
+  font-family: var(--font-display); font-size: 0.9rem; color: rgba(250,248,245,0.35);
+  white-space: nowrap; flex-shrink: 0;
+}
+.menu-opt.selected .menu-opt-price { color: var(--accent-light); }
+
+/* STYLIST PICKER */
+.stylist-options {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px;
+}
+.stylist-opt {
+  padding: 12px 14px; border: 1px solid rgba(250,248,245,0.06); border-radius: 6px;
+  background: rgba(250,248,245,0.02); cursor: pointer; transition: all 0.2s;
+  text-align: center;
+}
+.stylist-opt:hover { border-color: rgba(250,248,245,0.15); background: rgba(250,248,245,0.04); }
+.stylist-opt.selected { border-color: var(--accent); background: rgba(139,105,20,0.1); }
+.stylist-opt-name { font-size: 0.82rem; color: rgba(250,248,245,0.7); margin-bottom: 2px; }
+.stylist-opt.selected .stylist-opt-name { color: var(--accent-light); }
+.stylist-opt-role { font-size: 0.65rem; color: rgba(250,248,245,0.25); }
+.stylist-opt.selected .stylist-opt-role { color: rgba(250,248,245,0.4); }
+.stylist-opt-fee { font-size: 0.65rem; color: rgba(250,248,245,0.2); margin-top: 2px; }
+.stylist-opt.selected .stylist-opt-fee { color: var(--accent); }
+
 /* SUBMIT */
 .booking-submit-wrap { padding: 8px 0 0; }
 .booking-submit {
@@ -396,19 +449,16 @@ body {
           </select>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>メニュー <span class="required">必須</span></label>
-          <select name="menu" id="bookingMenu" required>
-            <option value="">選択してください</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>担当スタイリスト</label>
-          <select name="stylist" id="bookingStylist">
-            <option value="指名なし">指名なし</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label>メニュー <span class="required">必須</span></label>
+        <input type="hidden" name="menu" id="bookingMenuValue" required>
+        <div class="menu-tabs" id="menuCatTabs"></div>
+        <div class="menu-options" id="menuOptions"></div>
+      </div>
+      <div class="form-group">
+        <label>担当スタイリスト</label>
+        <input type="hidden" name="stylist" id="bookingStylistValue" value="指名なし">
+        <div class="stylist-options" id="stylistOptions"></div>
       </div>
       <div class="form-group">
         <label>ご要望・備考</label>
@@ -551,8 +601,6 @@ const staffData = [
 
 // ===== INIT =====
 (function() {
-  var menuSelect = document.getElementById('bookingMenu');
-  var stylistSelect = document.getElementById('bookingStylist');
   var dateInput = document.getElementById('inputDate');
 
   // Min date = tomorrow
@@ -560,26 +608,59 @@ const staffData = [
   tomorrow.setDate(tomorrow.getDate() + 1);
   dateInput.min = tomorrow.toISOString().split('T')[0];
 
-  // Populate menus
+  // Menu picker
   var categoryNames = { set: 'セットメニュー', cut: 'カット', color: 'カラー', perm: 'パーマ・矯正', treatment: 'トリートメント', headspa: 'ヘッドスパ', other: 'その他' };
-  for (var key in menuData) {
-    var group = document.createElement('optgroup');
-    group.label = categoryNames[key] || key;
-    menuData[key].forEach(function(item) {
-      var opt = document.createElement('option');
-      opt.value = item.name;
-      opt.textContent = item.name + '（¥' + item.price.toLocaleString() + '）';
-      group.appendChild(opt);
+  var menuCatTabs = document.getElementById('menuCatTabs');
+  var menuOptions = document.getElementById('menuOptions');
+  var menuHidden = document.getElementById('bookingMenuValue');
+  var categories = Object.keys(menuData);
+
+  function renderMenuCategory(cat) {
+    menuOptions.innerHTML = '';
+    menuData[cat].forEach(function(item) {
+      var div = document.createElement('div');
+      div.className = 'menu-opt' + (menuHidden.value === item.name ? ' selected' : '');
+      div.innerHTML = '<span class="menu-opt-name">' + item.name + '</span><span class="menu-opt-price">&yen;' + item.price.toLocaleString() + '</span>';
+      div.addEventListener('click', function() {
+        menuOptions.querySelectorAll('.menu-opt').forEach(function(o) { o.classList.remove('selected'); });
+        div.classList.add('selected');
+        menuHidden.value = item.name;
+      });
+      menuOptions.appendChild(div);
     });
-    menuSelect.appendChild(group);
   }
 
-  // Populate stylists
-  staffData.forEach(function(s) {
-    var opt = document.createElement('option');
-    opt.value = s.name;
-    opt.textContent = s.name + '（' + s.role + '）' + (s.fee ? ' +¥' + s.fee.toLocaleString() : '');
-    stylistSelect.appendChild(opt);
+  categories.forEach(function(cat, idx) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'menu-cat-btn' + (idx === 0 ? ' active' : '');
+    btn.textContent = categoryNames[cat] || cat;
+    btn.addEventListener('click', function() {
+      menuCatTabs.querySelectorAll('.menu-cat-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderMenuCategory(cat);
+    });
+    menuCatTabs.appendChild(btn);
+  });
+  renderMenuCategory(categories[0]);
+
+  // Stylist picker
+  var stylistOptions = document.getElementById('stylistOptions');
+  var stylistHidden = document.getElementById('bookingStylistValue');
+
+  var allStylists = [{ name: '指名なし', role: 'フリー', fee: 0 }].concat(staffData);
+  allStylists.forEach(function(s) {
+    var div = document.createElement('div');
+    div.className = 'stylist-opt' + (s.name === '指名なし' ? ' selected' : '');
+    div.innerHTML = '<div class="stylist-opt-name">' + s.name + '</div>'
+      + '<div class="stylist-opt-role">' + s.role + '</div>'
+      + (s.fee ? '<div class="stylist-opt-fee">+¥' + s.fee.toLocaleString() + '</div>' : '<div class="stylist-opt-fee">指名料なし</div>');
+    div.addEventListener('click', function() {
+      stylistOptions.querySelectorAll('.stylist-opt').forEach(function(o) { o.classList.remove('selected'); });
+      div.classList.add('selected');
+      stylistHidden.value = s.name;
+    });
+    stylistOptions.appendChild(div);
   });
 
   // Step highlight on focus
@@ -617,8 +698,8 @@ const staffData = [
     var name = document.getElementById('inputName').value;
     var date = document.getElementById('inputDate').value;
     var time = document.getElementById('inputTime').value;
-    var menu = document.getElementById('bookingMenu').value;
-    var stylist = document.getElementById('bookingStylist').value;
+    var menu = document.getElementById('bookingMenuValue').value;
+    var stylist = document.getElementById('bookingStylistValue').value;
     var note = form.querySelector('textarea[name="note"]').value;
 
     // Format date for display
