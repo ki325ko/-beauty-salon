@@ -338,37 +338,33 @@ const staffData = [
     stylistSelect.appendChild(opt);
   });
 
-  // Submit
-  document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+  // Submit via hidden iframe (most reliable for GAS)
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWTfkgswTOAJRpgsnG_IN5MYq8VewF7Gib42_Z0y-Pkcq-WwD2N7lG-yUdgcUCIG-S/exec';
+  const form = document.getElementById('bookingForm');
+  form.action = GAS_URL;
+  form.method = 'POST';
+  form.target = 'gas-iframe';
+
+  // Create hidden iframe
+  const iframe = document.createElement('iframe');
+  iframe.name = 'gas-iframe';
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  form.addEventListener('submit', function() {
     const btn = document.getElementById('bookingSubmit');
     const result = document.getElementById('bookingResult');
     btn.disabled = true;
     btn.textContent = '送信中...';
-    result.className = 'booking-result';
-    result.style.display = 'none';
 
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWTfkgswTOAJRpgsnG_IN5MYq8VewF7Gib42_Z0y-Pkcq-WwD2N7lG-yUdgcUCIG-S/exec';
-      const params = new URLSearchParams(data);
-      await fetch(GAS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: params
-      });
+    setTimeout(function() {
       result.className = 'booking-result success';
       result.textContent = '予約リクエストを送信しました。サロンからの確認連絡をお待ちください。';
-      this.reset();
+      form.reset();
       dateInput.min = tomorrow.toISOString().split('T')[0];
-    } catch (err) {
-      result.className = 'booking-result error';
-      result.textContent = '送信に失敗しました。お手数ですがお電話でご予約ください。';
-    }
-    btn.disabled = false;
-    btn.textContent = '予約を送信する';
+      btn.disabled = false;
+      btn.textContent = '予約を送信する';
+    }, 2000);
   });
 })();
 </script>
